@@ -4,7 +4,7 @@ import { Button, Drawer, Group, Stepper } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
-export default function MultiStepForm(props: any) {
+export default function MultiStepForm() {
   const [active, setActive] = useState(1);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -12,7 +12,6 @@ export default function MultiStepForm(props: any) {
 
   return (
     <>
-      {JSON.stringify(props)}
       <Drawer opened={opened} onClose={close} title="Authentication">
         {/* Drawer content */}
       </Drawer>
