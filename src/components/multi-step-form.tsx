@@ -1,11 +1,17 @@
-"use client";
-
-import { Button, Drawer, Group, Stepper } from "@mantine/core";
+import { Button, Drawer, Group, Stepper, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function MultiStepForm() {
-  const [active, setActive] = useState(1);
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: { email: "" },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    },
+  });
+  const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const [opened, { open, close }] = useDisclosure(false);
@@ -17,7 +23,19 @@ export default function MultiStepForm() {
       </Drawer>
       <Stepper active={active} onStepClick={setActive}>
         <Stepper.Step label="First step" description="Create an account">
-          Step 1 content: Create an account
+          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <TextInput placeholder="Write your First Name" label="First Name" />
+            <TextInput placeholder="Write your Last Name" label="Last Name" />
+            <TextInput
+              placeholder="wholesaler@urbanroad.com.au"
+              label="Email Address"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+            />
+            <Button type="submit" mt="sm">
+              Submit
+            </Button>
+          </form>
         </Stepper.Step>
         <Stepper.Step label="Second step" description="Verify email">
           Step 2 content: Verify email

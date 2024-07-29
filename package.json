@@ -3,15 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "tailwind": "npx tailwindcss -o ./src/tailwind.css --watch",
+    "start": "react-app-rewired start",
     "build": "webpack --config webpack.config.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
     "@mantine/core": "^7.11.2",
+    "@mantine/form": "^7.11.2",
     "@mantine/hooks": "^7.11.2",
+    "clsx": "^2.1.1",
+    "libphonenumber-js": "^1.11.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",
@@ -39,6 +45,7 @@
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
     "prop-types": "^15.8.1",
+    "react-app-rewired": "^2.2.1",
     "storybook": "^8.2.6",
     "tailwindcss": "^3.4.1",
     "webpack": "^5.93.0",
@@ -47,6 +54,18 @@
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   }
 }
