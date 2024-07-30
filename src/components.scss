@@ -1,0 +1,56 @@
+:root {
+  --primary-hover-color: #f6eadf;
+  --white-color: #ffffff;
+  --dark-grey: #5c5c5c;
+}
+
+body {
+  background-color: #fcf8f2;
+}
+
+.action-icon {
+  & > svg path {
+    fill: var(--dark-grey);
+  }
+}
+
+.ur-phone-input {
+  --phone-input-width: 100%;
+  width: var(--phone-input-width);
+  background: var(--white-color);
+  padding: 16px 10px;
+  height: 48px;
+  &__input {
+    width: 100%;
+  }
+  &__country-code {
+    $border: 1px solid rgba(102, 102, 102, 0.2);
+    border-left: $border;
+    border-right: $border;
+    padding: 0 8px;
+    margin: 0 2px;
+  }
+  &__popover {
+    --phone-input-popover-width: min(300px, 100%);
+    width: var(--phone-input-popover-width) !important;
+    padding: 0;
+    margin-top: 7px;
+  }
+  &__country-option {
+    &:hover {
+      background-color: var(--primary-hover-color);
+    }
+    & > div {
+      white-space: nowrap;
+      max-width: 270px;
+      flex: none !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block !important;
+      & > span {
+        max-width: 20px;
+        display: inline-block !important;
+      }
+    }
+  }
+}

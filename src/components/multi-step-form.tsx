@@ -2,6 +2,7 @@ import { Button, Drawer, Group, Stepper, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
+import PhoneInput from "./phone-input";
 
 export default function MultiStepForm() {
   const form = useForm({
@@ -24,14 +25,16 @@ export default function MultiStepForm() {
       <Stepper active={active} onStepClick={setActive}>
         <Stepper.Step label="First step" description="Create an account">
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
-            <TextInput placeholder="Write your First Name" label="First Name" />
-            <TextInput placeholder="Write your Last Name" label="Last Name" />
+            <TextInput placeholder="Write your First Name" label="First Name" required />
+            <TextInput placeholder="Write your Last Name" label="Last Name" required />
             <TextInput
+              required
               placeholder="wholesaler@urbanroad.com.au"
               label="Email Address"
               key={form.key("email")}
               {...form.getInputProps("email")}
             />
+            <PhoneInput placeholder="Phone number" width="100%" required />
             <Button type="submit" mt="sm">
               Submit
             </Button>

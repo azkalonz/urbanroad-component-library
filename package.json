@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "tailwind": "npx tailwindcss -o ./src/tailwind.css --watch",
-    "start": "react-app-rewired start",
+    "start": "concurrently \"react-app-rewired start\" \"npx tailwindcss -o ./src/tailwind.css --watch\"",
     "build": "webpack --config webpack.config.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -13,6 +12,7 @@
     "@mantine/core": "^7.11.2",
     "@mantine/form": "^7.11.2",
     "@mantine/hooks": "^7.11.2",
+    "@radix-ui/react-icons": "^1.3.0",
     "clsx": "^2.1.1",
     "libphonenumber-js": "^1.11.5",
     "react": "^18",
@@ -39,6 +39,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "babel-loader": "^9.1.3",
+    "concurrently": "^8.2.2",
     "eslint": "^8",
     "eslint-plugin-storybook": "^0.8.0",
     "postcss": "^8.4.40",
@@ -46,6 +47,7 @@
     "postcss-simple-vars": "^7.0.1",
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
+    "sass": "^1.77.8",
     "storybook": "^8.2.6",
     "tailwindcss": "^3.4.1",
     "webpack": "^5.93.0",
