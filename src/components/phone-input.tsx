@@ -1,4 +1,4 @@
-import countries, { CountryInterface } from "@/data/country-phone";
+import countries, { CountryInterface } from "../data/country-phone";
 import {
   ActionIcon,
   Group,
@@ -15,7 +15,7 @@ import { TriangleDownIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import { CountryCode, isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { useRef, useState } from "react";
-const flags = require("@/countries-flags");
+const flags = require("../countries-flags/index");
 
 interface PhoneInput extends Omit<TextInputProps, "children" | "variant" | "value"> {
   containerProps?: React.ButtonHTMLAttributes<HTMLDivElement>;

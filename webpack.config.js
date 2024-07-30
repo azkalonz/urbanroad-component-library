@@ -10,7 +10,10 @@ module.exports = {
     globalObject: "this",
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js"],
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
   module: {
     rules: [

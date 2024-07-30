@@ -1,5 +1,6 @@
 :root {
   --primary-hover-color: #f6eadf;
+  --primary-button-color: #f4b35d;
   --white-color: #ffffff;
   --dark-grey: #5c5c5c;
 }
@@ -11,6 +12,24 @@ body {
 .action-icon {
   & > svg path {
     fill: var(--dark-grey);
+  }
+}
+
+.stepper-icon {
+  &[data-progress="true"] {
+    border: none;
+    background-color: var(--primary-button-color);
+  }
+  &[data-completed] {
+    background-color: transparent;
+    border: 1.5px solid var(--primary-button-color);
+    & > * {
+      position: relative;
+    }
+  }
+  &:not([data-progress]):not([data-completed]) {
+    background-color: transparent;
+    border: 1.5px solid var(--primary-button-color);
   }
 }
 
