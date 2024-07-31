@@ -1,0 +1,1 @@
+{"v":5,"entries":{"forms-multi-step-form--wholesale-registration":{"type":"story","id":"forms-multi-step-form--wholesale-registration","name":"Wholesale Registration","title":"Forms/Multi Step Form","importPath":"./src/stories/MultiStepForm.stories.tsx","componentPath":"./src/components/wholesale-registraton-form.tsx","tags":["dev","test"]}}}
