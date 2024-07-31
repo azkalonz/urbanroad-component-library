@@ -629,6 +629,10 @@ video {
   max-width: 423px;
 }
 
+.max-w-sm {
+  max-width: 24rem;
+}
+
 .items-center {
   align-items: center;
 }
@@ -670,10 +674,6 @@ video {
 
 .bg-transparent {
   background-color: transparent;
-}
-
-.p-0 {
-  padding: 0px;
 }
 
 .px-\[12px\] {

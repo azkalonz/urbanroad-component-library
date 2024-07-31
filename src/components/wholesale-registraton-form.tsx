@@ -121,7 +121,7 @@ export default function WholesaleRegistrationForm() {
   }, [states]);
 
   return (
-    <>
+    <div className="max-w-sm m-[0_auto]">
       <Drawer opened={opened} onClose={close} title="Form Values">
         <pre>
           <Code>{JSON.stringify(form.getValues(), null, 4)}</Code>
@@ -291,6 +291,6 @@ export default function WholesaleRegistrationForm() {
           <Button onClick={open}>View Form Values</Button>
         </Stepper.Completed>
       </MultiStepForm>
-    </>
+    </div>
   );
 }
