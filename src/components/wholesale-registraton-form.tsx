@@ -177,6 +177,7 @@ export default function WholesaleRegistrationForm() {
               }))}
               key={form.key("country")}
               searchable
+              w="100%"
             />
             <Select
               {...form.getInputProps("state")}
@@ -196,6 +197,7 @@ export default function WholesaleRegistrationForm() {
               limit={100}
               key={form.key("state")}
               searchable
+              w="100%"
             />
           </Flex>
           <TextInput {...form.getInputProps("abn_acn")} placeholder="ABN / ACN" label="ABN / ACN" required w="100%" />
