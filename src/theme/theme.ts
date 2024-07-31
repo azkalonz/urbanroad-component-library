@@ -1,6 +1,8 @@
-import { colorsTuple, createTheme, DEFAULT_THEME, mergeMantineTheme } from "@mantine/core";
+import { colorsTuple, createTheme, DEFAULT_THEME, mergeMantineTheme, Select } from "@mantine/core";
 import "../components.scss";
 import "../tailwind.css";
+import selectClasses from "./select.module.scss";
+import clsx from "clsx";
 
 export const colors = {
   black: "#212121",
@@ -33,11 +35,17 @@ const themeOverride = createTheme({
         input: "text-base border border-[#E4E4E4] h-[48px] rounded-[7px]",
       },
     },
-    Select: {
+    Select: Select.extend({
       classNames: {
-        option: "text-base",
+        ...selectClasses,
+        dropdown: clsx(
+          selectClasses.dropdown,
+          "rounded-b-md border border-[#E4E4E4] border-t-0  mt-[-14px] shadow-[0_3px_8px_rgba(14, 14, 44, 0.1)]"
+        ),
+        option: clsx(selectClasses.option, "py-2"),
+        input: clsx(selectClasses.input, "rounded-t-md"),
       },
-    },
+    }),
     ActionIcon: {
       classNames: {
         icon: "action-icon",
@@ -64,7 +72,6 @@ const themeOverride = createTheme({
       classNames: {
         label: "text-base",
         body: "items-center",
-        root: "mt-[16px] mb-[32px]",
       },
     },
   },

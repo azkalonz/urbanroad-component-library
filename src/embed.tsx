@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import MultiStepForm from "./components/multi-step-form";
+import MultiStepForm from "./hooks/multi-step-form";
 import ThemeProvider from "./components/theme-provider";
 
 const multiStepForm = (config: any) => {

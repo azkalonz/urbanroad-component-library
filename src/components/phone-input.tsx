@@ -1,7 +1,8 @@
-import countries, { CountryInterface } from "../data/country-phone";
+import { parsePhone } from "@/utils";
 import {
   ActionIcon,
   Group,
+  InputError,
   InputLabel,
   InputWrapper,
   Popover,
@@ -13,18 +14,38 @@ import {
 } from "@mantine/core";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
+import { Country, ICountry } from "country-state-city";
 import { CountryCode, isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 const flags = require("../countries-flags/index");
 
-interface PhoneInput extends Omit<TextInputProps, "children" | "variant" | "value"> {
+interface PhoneInput extends Omit<TextInputProps, "children" | "variant" | "onChange"> {
   containerProps?: React.ButtonHTMLAttributes<HTMLDivElement>;
+  error?: any;
+  onBlur?: () => void;
+  onChange?: (value: string) => void;
+  onFocus?: () => any;
+  value?: any;
 }
 
 export default function PhoneInput(props: PhoneInput) {
-  const { containerProps = {}, className: inputCn, placeholder: inputPlaceholder = "", ...restInputProps } = props;
-  const [value, setValue] = useState<string>("");
-  const [selected, setSelected] = useState<CountryInterface>(countries.find(({ code }) => code === "AU")!);
+  const {
+    onBlur,
+    onChange,
+    onFocus,
+    error,
+    value: remoteValue,
+    containerProps = {},
+    className: inputCn,
+    placeholder: inputPlaceholder = "",
+    ...restInputProps
+  } = props;
+  const countries = useMemo(
+    () => Country.getAllCountries().sort((a, b) => a.phonecode.charCodeAt(0) - b.phonecode.charCodeAt(0)),
+    []
+  );
+  const [value, setValue] = useState<string>(parsePhone(remoteValue).number);
+  const [selected, setSelected] = useState<ICountry>(Country.getCountryByCode("AU")!);
   const selectRef = useRef<any>();
   const { className: containerCn, style: containerStyle, ...restContainerProps } = containerProps;
   const flagIcon = (code: string) => (
@@ -33,19 +54,33 @@ export default function PhoneInput(props: PhoneInput) {
       style={{ width: "32px", display: "block", borderRadius: "2px", overflow: "hidden" }}
     />
   );
-
-  const findCountryCode = (country: string, code: string) =>
-    countries.find(({ name, dial_code }) => name === country && code === dial_code);
-
   const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {
     const { items }: any = option;
     return (
       <Group flex="1" gap="xs">
-        {flagIcon(items.code)}&nbsp;&nbsp;
+        {flagIcon(items?.isoCode)}&nbsp;&nbsp;
         {option.label}
       </Group>
     );
   };
+
+  const phoneCode = (phoneCode: string) => (phoneCode.indexOf("+") >= 0 ? phoneCode : "+" + phoneCode);
+  const getFormattedValue = (val = value) => (val ? "(" + phoneCode(selected.phonecode) + ") " + val : "");
+
+  useEffect(() => {
+    if (remoteValue) {
+      try {
+        let { value } = JSON.parse(remoteValue);
+        setValue(value);
+      } catch (e) {}
+    }
+  }, [remoteValue]);
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(getFormattedValue());
+    }
+  }, [selected]);
 
   return (
     <InputWrapper>
@@ -63,60 +98,66 @@ export default function PhoneInput(props: PhoneInput) {
                 "--ai-size": "55px",
               }}
             >
-              {flagIcon(selected?.code || "")}
+              {flagIcon(selected?.isoCode || "")}
               <TriangleDownIcon width="25px" height="20px" color="#5C5C5C" />
             </ActionIcon>
           </Popover.Target>
-          <Popover.Dropdown className="h-[300px] shadow-none border-none bg-transparent ur-phone-input__popover !mt-0">
+          <Popover.Dropdown className="text-[#212121] h-[300px] shadow-none border-none bg-transparent ur-phone-input__popover !mt-0">
             <Select
               onDropdownClose={() => {
                 // debugger;
               }}
               checkIconPosition="left"
-              // leftSection={selected ? flagIcon(selected.code) : null}
+              leftSection={selected ? flagIcon(selected?.isoCode) : null}
               onChange={(value: any) => {
-                value = value?.split(" ");
-                let selected = findCountryCode(value.slice(0, value.length - 1).join(" "), value[value.length - 1]);
-                if (selected) setSelected(selected);
+                setSelected(Country.getCountryByCode(value)!);
               }}
               data={countries.map((c, i) => ({
-                label: c.dial_code + " " + c.name,
-                value: c.name + " " + c.dial_code,
+                label: phoneCode(c.phonecode),
+                value: c?.isoCode,
                 items: c,
               }))}
-              value={selected ? selected.name + " " + selected?.dial_code : ""}
+              value={selected?.isoCode}
               ref={selectRef}
               searchable
               spellCheck={false}
               renderOption={renderSelectOption}
-              classNames={{
-                option: "ur-phone-input__country-option py-2",
-                input: "rounded-t-md",
-                dropdown:
-                  "rounded-b-md border border-[#E4E4E4] border-t-0 p-0 mt-[-14px] shadow-[0_3px_8px_rgba(14, 14, 44, 0.1)]",
-              }}
             />
           </Popover.Dropdown>
         </Popover>
-        <Text className="ur-phone-input__country-code">{selected?.dial_code}</Text>
+        <Text className="ur-phone-input__country-code text-nowrap">{phoneCode(selected.phonecode)}</Text>
         <TextInput
           className={clsx(inputCn, "ur-phone-input__input !mb-0")}
+          {...(error
+            ? {
+                styles: {
+                  input: {
+                    color: "var(--mantine-color-error)",
+                    "--input-placeholder-color": "var(--mantine-color-error)",
+                  },
+                },
+              }
+            : {})}
           variant="transparent"
           value={value}
           placeholder={inputPlaceholder}
           onChange={(e) => {
-            let code = selected.code as CountryCode;
+            let code = selected?.isoCode as CountryCode;
             let value = e.target.value;
             let isValid = isValidPhoneNumber(value, code);
             if (isValid) {
               let phoneNumber = parsePhoneNumber(value, code);
               value = phoneNumber.format("NATIONAL");
             }
+            if (onChange) {
+              onChange(getFormattedValue(value));
+            }
             setValue(value);
           }}
           {...restInputProps}
         />
       </div>
+      {error && <InputError style={{ marginTop: "calc(var(--mantine-spacing-xs) / 2)" }}>{error}</InputError>}
     </InputWrapper>
   );
 }
