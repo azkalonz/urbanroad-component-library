@@ -1,9 +1,11 @@
 :root {
+  --text-color: #212121;
+  --link-color: #d58967;
   --primary-hover-color: #f6eadf;
   --primary-button-color: #f4b35d;
   --white-color: #ffffff;
   --dark-grey: #5c5c5c;
-  --stepper-icon-color: #212121;
+  --stepper-icon-color: var(--text-color);
 }
 
 body {

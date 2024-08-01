@@ -1,0 +1,8 @@
+.root {
+  &:global(:not(.no-margin)) {
+    margin-bottom: 8px;
+  }
+}
+.required {
+  --input-asterisk-color: var(--text-color);
+}

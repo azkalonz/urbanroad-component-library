@@ -1,33 +1,53 @@
+import { getKeyByValue } from "@/utils";
 import { Button, Group, Stepper, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 interface MultiStepFormParams {
   formData: any;
   stepErrors?: { [key: number]: { fields: string[] } };
+  stepsCount: number;
 }
 
 export default function useMultiStepForm(params: MultiStepFormParams) {
-  const { formData, stepErrors } = params;
+  const { formData, stepErrors, stepsCount } = params;
   const form = useForm(formData);
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
-  const handleNextStep = () => {
+  const validate = (
+    goNextStep: boolean = true,
+    callback: (error?: { index: number; allStepErrors: any }) => void = () => {}
+  ) => {
+    if (!stepErrors?.[active]) return {};
     const validate = form.validate();
-    const { hasErrors, errors } = validate;
-    if (stepErrors && stepErrors[active]) {
-      let stepHasErrors = Object.keys(errors).some((r: string) => stepErrors[active].fields.includes(r));
-      if (!stepHasErrors) {
-        nextStep();
-      }
+    const { errors } = validate;
+    const allStepErrors: { [key: number]: any } = {};
+    for (let i = 0; i < stepsCount; i++) {
+      allStepErrors[i] = Object.keys(errors).some((r: string) => stepErrors[i].fields.includes(r));
+    }
+    let stepHasErrors = allStepErrors[active];
+    if (!stepHasErrors) {
+      if (goNextStep) nextStep();
+      return callback();
     } else {
-      if (hasErrors) {
-      } else {
-        nextStep();
+      let firstStepError = getKeyByValue(allStepErrors, true);
+      if (firstStepError) {
+        let errorIndex = parseInt(firstStepError);
+        setActive(errorIndex);
+        return callback({ index: errorIndex, allStepErrors });
       }
+      return callback();
+    }
+  };
+
+  const handleNextStep = (index?: number) => {
+    if (typeof index !== "number") {
+      validate();
+    } else {
+      setActive(index);
     }
   };
 
@@ -46,46 +66,70 @@ export default function useMultiStepForm(params: MultiStepFormParams) {
     };
   };
 
+  const Navigation = useMemo(
+    () =>
+      ({ children }: { children?: React.ReactNode }) => (
+        <Group justify="space-between" wrap="nowrap" gap={16} mt="32px">
+          <Button
+            p={0}
+            className="shrink-0"
+            classNames={{
+              label: "ur-link-button__label",
+            }}
+            variant="transparent"
+            onClick={prevStep}
+            leftSection={<ChevronLeftIcon />}
+            w="92px"
+          >
+            <Text className="underline ">Back</Text>
+          </Button>
+          {!children && (
+            <Button
+              onClick={() => handleNextStep()}
+              fullWidth
+              radius="100px"
+              classNames={{ label: "ur-pill-button__label" }}
+            >
+              Next
+            </Button>
+          )}
+          {!!children && children}
+        </Group>
+      ),
+    [active]
+  );
+
   const MultiStepForm = useMemo(
     () =>
-      function ({ children }: { children: React.ReactNode }) {
+      function ({ children, completeComponent }: { children: React.ReactNode; completeComponent?: React.ReactNode }) {
         return (
           <>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <Stepper active={active} onStepClick={setActive}>
+              <Stepper
+                active={active}
+                onStepClick={(index) => {
+                  form.clearErrors();
+                  handleNextStep(index);
+                }}
+              >
                 {children}
               </Stepper>
+              {active === stepsCount - 1 && completeComponent}
             </form>
-
-            <Group justify="space-between" wrap="nowrap" gap={40} mt="32px">
-              {active > 0 && (
-                <Button
-                  p={0}
-                  className="shrink-0"
-                  variant="transparent"
-                  onClick={prevStep}
-                  leftSection={<ChevronLeftIcon />}
-                >
-                  <Text className="underline ">Back</Text>
-                </Button>
-              )}
-              <Button onClick={handleNextStep} fullWidth radius="100px" className="h-[48px]">
-                Next step
-              </Button>
-            </Group>
+            {completeComponent ? active < stepsCount - 1 && <Navigation /> : <Navigation />}
           </>
         );
       },
     [active]
   );
 
-  useEffect(() => {
-    form.clearErrors();
-  }, [active]);
-
   return {
     MultiStepForm,
+    Navigation,
+    validate,
     makeStepIcon,
+    nextStep,
+    prevStep,
     form,
   };
 }

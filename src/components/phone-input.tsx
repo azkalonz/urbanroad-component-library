@@ -110,9 +110,15 @@ export default function PhoneInput(props: PhoneInput) {
           </Popover.Target>
           <Popover.Dropdown className="ur-phone-input__popover--dropdown">
             <Select
+              classNames={{
+                root: "ur-phone-input__select",
+                input: "ur-phone-input__select--input",
+                dropdown: "ur-phone-input__select--dropdown",
+              }}
               onDropdownClose={() => {
                 // debugger;
               }}
+              rightSectionPointerEvents="none"
               checkIconPosition="left"
               onChange={(value: any) => {
                 setSelected(Country.getCountryByCode(value)!);

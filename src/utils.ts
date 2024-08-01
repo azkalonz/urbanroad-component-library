@@ -15,3 +15,7 @@ export const parsePhone = (number: string): ParsedPhone => {
   res.number_code = (res.code + res.number).replaceAll(" ", "");
   return res;
 };
+
+export const getKeyByValue = (object: any, value: any) => {
+  return Object.keys(object).find((key: string) => object[key] === value);
+};

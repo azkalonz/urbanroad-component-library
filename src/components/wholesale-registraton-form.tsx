@@ -22,7 +22,8 @@ import { useEffect, useMemo } from "react";
 const { parseAddress } = require("addresser");
 
 export default function WholesaleRegistrationForm() {
-  const { MultiStepForm, form, makeStepIcon } = useMultiStepForm({
+  const { MultiStepForm, form, makeStepIcon, Navigation, validate } = useMultiStepForm({
+    stepsCount: 3,
     formData: {
       initialValues: {
         subscribe_to_newsletter: false,
@@ -51,7 +52,6 @@ export default function WholesaleRegistrationForm() {
         email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
         phone: (value: string) => {
           let { number_code } = parsePhone(value);
-          console.log(number_code);
           return isValidNumber(number_code) ? null : "Invalid phone number";
         },
         // required fields
@@ -73,6 +73,17 @@ export default function WholesaleRegistrationForm() {
         ].reduce((p, c) => ({ ...p, [c]: (value: string) => (value?.length ? null : "Required") }), {}),
       },
     },
+    stepErrors: {
+      0: {
+        fields: ["first_name", "last_name", "email", "phone"],
+      },
+      1: {
+        fields: ["company_name", "country", "suburb", "state", "address", "postcode", "abn_acn", "business_type"],
+      },
+      2: {
+        fields: ["website_url", "lead_source", "interest", "trade_references"],
+      },
+    },
   });
   const [opened, { open, close }] = useDisclosure(false);
   const countries = useMemo(
@@ -85,7 +96,7 @@ export default function WholesaleRegistrationForm() {
   );
 
   const FormTitle = useMemo(
-    () => () => <Text className="text-[24px] font-bold text-center my-[32px]">Wholesale Registration</Text>,
+    () => () => <Text className="text-[24px] font-bold text-center my-[16px]">Wholesale Registration</Text>,
     []
   );
 
@@ -122,7 +133,26 @@ export default function WholesaleRegistrationForm() {
           <Code>{JSON.stringify(form.getValues(), null, 4)}</Code>
         </pre>
       </Drawer>
-      <MultiStepForm>
+      <MultiStepForm
+        completeComponent={
+          <Navigation>
+            <Button
+              onClick={() => {
+                validate(false, (err) => {
+                  if (!err) {
+                    open();
+                  }
+                });
+              }}
+              fullWidth
+              radius="100px"
+              classNames={{ label: "ur-pill-button__label", root: "ur-pill-button--light" }}
+            >
+              Register
+            </Button>
+          </Navigation>
+        }
+      >
         <Stepper.Step {...makeStepIcon(1, "Your details")}>
           <FormTitle />
           <TextInput
@@ -148,7 +178,7 @@ export default function WholesaleRegistrationForm() {
           <Checkbox
             {...form.getInputProps("subscribe_to_newsletter")}
             checked={form.getValues().subscribe_to_newsletter}
-            className="mt-[8px]"
+            className="mt-[16px]"
             label="I consent to receive subscribe to the Urban Road newsletter."
           />
         </Stepper.Step>
@@ -156,11 +186,11 @@ export default function WholesaleRegistrationForm() {
           <FormTitle />
           <TextInput {...form.getInputProps("company_name")} placeholder="Company name" label="Company name" required />
           <TextInput {...form.getInputProps("address")} placeholder="Address" label="Billing Address" required />
-          <Flex gap="8px">
+          <Flex gap="8px" mb="8px">
             <TextInput {...form.getInputProps("postcode")} placeholder="Postcode" label="Postcode" required w="100%" />
             <TextInput {...form.getInputProps("suburb")} placeholder="Suburb" label="Suburb" required w="100%" />
           </Flex>
-          <Flex gap="8px">
+          <Flex gap="8px" mb="8px">
             <Select
               {...form.getInputProps("country")}
               label="Country"
@@ -215,19 +245,6 @@ export default function WholesaleRegistrationForm() {
             key={form.key("state")}
             searchable
           />
-          <Checkbox
-            {...form.getInputProps("subscribe_to_dropshipping")}
-            checked={form.getValues().subscribe_to_dropshipping}
-            className="mt-[8px]"
-            label={
-              <>
-                <Text>I would like information regarding dropshipping</Text>
-                <Text>
-                  <small>Our Wholesale manager will be in touch to discuss further</small>
-                </Text>
-              </>
-            }
-          />
         </Stepper.Step>
         <Stepper.Step {...makeStepIcon(3, "Other details")}>
           <FormTitle />
@@ -256,9 +273,21 @@ export default function WholesaleRegistrationForm() {
             required
             data={["Google Search"]}
             searchable
+            mb="8px"
           />
-          <Checkbox.Group {...form.getInputProps("interest")} label="What products interest you the most?" withAsterisk>
-            <Group mt="xs">
+          <Checkbox.Group
+            {...form.getInputProps("interest")}
+            label="What products interest you the most?"
+            withAsterisk
+            mb="8px"
+          >
+            <Group
+              mt="xs"
+              display="grid"
+              style={{
+                gridTemplateColumns: "repeat(3,1fr)",
+              }}
+            >
               {["Wall Art", "Wallpaper", "Homewares", "Furniture", "Commercial"].map((interest: string) => (
                 <Checkbox value={interest} label={interest} key={interest} />
               ))}
@@ -277,6 +306,7 @@ export default function WholesaleRegistrationForm() {
           <Checkbox
             {...form.getInputProps("agree_to_terms_of_trade")}
             checked={form.getValues().agree_to_terms_of_trade}
+            mt="16px"
             className="mt-[8px]"
             label={
               <Text>

@@ -1,9 +1,23 @@
-import { colorsTuple, createTheme, DEFAULT_THEME, mergeMantineTheme, Popover, Select } from "@mantine/core";
+import {
+  Button,
+  colorsTuple,
+  createTheme,
+  DEFAULT_THEME,
+  InputWrapper,
+  mergeMantineTheme,
+  Popover,
+  Select,
+  TextInput,
+} from "@mantine/core";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import clsx from "clsx";
 import "../global.scss";
 import "../tailwind.css";
-import selectClasses from "./select.module.scss";
+import buttonClasses from "./button.module.scss";
+import inputWrapperClasses from "./input-wrapper.module.scss";
 import popoverClasses from "./popover.module.scss";
-import clsx from "clsx";
+import selectClasses from "./select.module.scss";
+import textInputClasses from "./text-input.module.scss";
 
 export const colors = {
   black: "#212121",
@@ -19,13 +33,17 @@ const themeOverride = createTheme({
     "light-orange": colorsTuple("#d58967"),
   },
   components: {
-    InputWrapper: {
+    InputWrapper: InputWrapper.extend({
       classNames: {
-        label: "text-[14px] leading-[19.6px] mb-[4px]",
-        root: "mb-[8px]",
-        required: `text-[${colors.black}]`,
+        ...inputWrapperClasses,
+        label: clsx(inputWrapperClasses.label, "text-[14px] leading-[19.6px] mb-[4px]"),
+        root: clsx(inputWrapperClasses.root),
+        required: clsx(inputWrapperClasses.required),
       },
-    },
+    }),
+    Button: Button.extend({
+      classNames: buttonClasses,
+    }),
     UnstyledButton: {
       classNames: {
         label: `text-[${colors.black}] uppercase font-[700]`,
@@ -37,16 +55,21 @@ const themeOverride = createTheme({
       },
     },
     Select: Select.extend({
+      defaultProps: {
+        rightSection: <ChevronDownIcon />,
+      },
       classNames: {
         ...selectClasses,
         dropdown: clsx(selectClasses.dropdown),
         option: clsx(selectClasses.option, "py-2"),
         input: clsx(selectClasses.input, "rounded-t-md"),
+        root: clsx(selectClasses.root, "no-margin"),
       },
     }),
     Popover: Popover.extend({
       classNames: {
         ...popoverClasses,
+        dropdown: clsx(popoverClasses.dropdown),
       },
     }),
     ActionIcon: {
@@ -54,11 +77,9 @@ const themeOverride = createTheme({
         icon: "action-icon",
       },
     },
-    TextInput: {
-      classNames: {
-        required: `text-[${colors.black}]`,
-      },
-    },
+    TextInput: TextInput.extend({
+      classNames: textInputClasses,
+    }),
     Stepper: {
       classNames: {
         stepIcon: `stepper-icon w-auto h-auto min-h-0 px-[12px] py-[2px] text-[${colors.black}]`,
@@ -73,8 +94,19 @@ const themeOverride = createTheme({
     },
     Checkbox: {
       classNames: {
-        label: "text-base",
+        label: "text-[14px] leading-[19.6px]",
         body: "items-center",
+      },
+      styles: {
+        inner: {
+          "--mantine-color-white": "transparent",
+          "--checkbox-size": "24px",
+        },
+      },
+    },
+    PillGroup: {
+      classNames: {
+        group: "w-[100%]",
       },
     },
   },
