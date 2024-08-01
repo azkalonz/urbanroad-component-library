@@ -36,9 +36,9 @@ const themeOverride = createTheme({
     InputWrapper: InputWrapper.extend({
       classNames: {
         ...inputWrapperClasses,
-        label: clsx(inputWrapperClasses.label, "text-[14px] leading-[19.6px] mb-[4px]"),
-        root: clsx(inputWrapperClasses.root),
-        required: clsx(inputWrapperClasses.required),
+        label: clsx(inputWrapperClasses?.label, "text-[14px] leading-[19.6px] mb-[4px]"),
+        root: clsx(inputWrapperClasses?.root),
+        required: clsx(inputWrapperClasses?.required),
       },
     }),
     Button: Button.extend({
@@ -60,16 +60,16 @@ const themeOverride = createTheme({
       },
       classNames: {
         ...selectClasses,
-        dropdown: clsx(selectClasses.dropdown),
-        option: clsx(selectClasses.option, "py-2"),
-        input: clsx(selectClasses.input, "rounded-t-md"),
-        root: clsx(selectClasses.root, "no-margin"),
+        dropdown: clsx(selectClasses?.dropdown),
+        option: clsx(selectClasses?.option, "py-2"),
+        input: clsx(selectClasses?.input, "rounded-t-md"),
+        root: clsx(selectClasses?.root, "no-margin"),
       },
     }),
     Popover: Popover.extend({
       classNames: {
         ...popoverClasses,
-        dropdown: clsx(popoverClasses.dropdown),
+        dropdown: clsx(popoverClasses?.dropdown),
       },
     }),
     ActionIcon: {

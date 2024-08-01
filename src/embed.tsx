@@ -1,11 +1,11 @@
 import ReactDOM from "react-dom";
-import MultiStepForm from "./hooks/multi-step-form";
 import ThemeProvider from "./components/theme-provider";
+import WholesaleRegistrationForm from "./components/wholesale-registraton-form";
 
 const multiStepForm = (config: any) => {
   ReactDOM.render(
     <ThemeProvider>
-      <MultiStepForm {...config} />
+      <WholesaleRegistrationForm {...config} />
     </ThemeProvider>,
     document.getElementById("multi-step-form")
   );
