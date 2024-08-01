@@ -1,7 +1,8 @@
-import { colorsTuple, createTheme, DEFAULT_THEME, mergeMantineTheme, Select } from "@mantine/core";
-import "../components.scss";
+import { colorsTuple, createTheme, DEFAULT_THEME, mergeMantineTheme, Popover, Select } from "@mantine/core";
+import "../global.scss";
 import "../tailwind.css";
 import selectClasses from "./select.module.scss";
+import popoverClasses from "./popover.module.scss";
 import clsx from "clsx";
 
 export const colors = {
@@ -38,12 +39,14 @@ const themeOverride = createTheme({
     Select: Select.extend({
       classNames: {
         ...selectClasses,
-        dropdown: clsx(
-          selectClasses.dropdown,
-          "rounded-b-md border border-[#E4E4E4] border-t-0  mt-[-14px] shadow-[0_3px_8px_rgba(14, 14, 44, 0.1)]"
-        ),
+        dropdown: clsx(selectClasses.dropdown),
         option: clsx(selectClasses.option, "py-2"),
         input: clsx(selectClasses.input, "rounded-t-md"),
+      },
+    }),
+    Popover: Popover.extend({
+      classNames: {
+        ...popoverClasses,
       },
     }),
     ActionIcon: {

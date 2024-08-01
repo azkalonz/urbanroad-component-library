@@ -3,6 +3,7 @@
   --primary-button-color: #f4b35d;
   --white-color: #ffffff;
   --dark-grey: #5c5c5c;
+  --stepper-icon-color: #212121;
 }
 
 body {
@@ -48,11 +49,5 @@ body {
     border-right: $border;
     padding: 0 8px;
     margin: 0 2px;
-  }
-  &__popover {
-    --phone-input-popover-width: min(300px, 100%);
-    width: var(--phone-input-popover-width) !important;
-    padding: 0;
-    margin-top: 7px;
   }
 }

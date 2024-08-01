@@ -22,8 +22,8 @@ import { useEffect, useMemo } from "react";
 const { parseAddress } = require("addresser");
 
 export default function WholesaleRegistrationForm() {
-  const { MultiStepForm, form, makeStepIcon } = useMultiStepForm(
-    {
+  const { MultiStepForm, form, makeStepIcon } = useMultiStepForm({
+    formData: {
       initialValues: {
         subscribe_to_newsletter: false,
         subscribe_to_dropshipping: false,
@@ -73,18 +73,7 @@ export default function WholesaleRegistrationForm() {
         ].reduce((p, c) => ({ ...p, [c]: (value: string) => (value?.length ? null : "Required") }), {}),
       },
     },
-    {
-      0: {
-        fields: ["first_name", "last_name", "email", "phone"],
-      },
-      1: {
-        fields: ["company_name", "country", "suburb", "state", "address", "postcode", "abn_acn", "business_type"],
-      },
-      2: {
-        fields: [],
-      },
-    }
-  );
+  });
   const [opened, { open, close }] = useDisclosure(false);
   const countries = useMemo(
     () => Country.getAllCountries().sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0)),
@@ -94,6 +83,12 @@ export default function WholesaleRegistrationForm() {
     () => [{ name: "-" }].concat(State.getStatesOfCountry(form.getValues().country)),
     [form.getValues().country]
   );
+
+  const FormTitle = useMemo(
+    () => () => <Text className="text-[24px] font-bold text-center my-[32px]">Wholesale Registration</Text>,
+    []
+  );
+
   useEffect(() => {
     let address = form.getValues().address;
     if (address.length) {
@@ -129,6 +124,7 @@ export default function WholesaleRegistrationForm() {
       </Drawer>
       <MultiStepForm>
         <Stepper.Step {...makeStepIcon(1, "Your details")}>
+          <FormTitle />
           <TextInput
             {...form.getInputProps("first_name")}
             placeholder="Write your First Name"
@@ -157,6 +153,7 @@ export default function WholesaleRegistrationForm() {
           />
         </Stepper.Step>
         <Stepper.Step {...makeStepIcon(2, "Company details")}>
+          <FormTitle />
           <TextInput {...form.getInputProps("company_name")} placeholder="Company name" label="Company name" required />
           <TextInput {...form.getInputProps("address")} placeholder="Address" label="Billing Address" required />
           <Flex gap="8px">
@@ -233,6 +230,7 @@ export default function WholesaleRegistrationForm() {
           />
         </Stepper.Step>
         <Stepper.Step {...makeStepIcon(3, "Other details")}>
+          <FormTitle />
           <TextInput
             {...form.getInputProps("facebook_url")}
             placeholder="Facebook"

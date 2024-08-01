@@ -90,7 +90,13 @@ export default function PhoneInput(props: PhoneInput) {
         style={containerStyle}
         {...restContainerProps}
       >
-        <Popover trapFocus width="target" position="bottom-start" offset={{ mainAxis: 7, crossAxis: -10 }}>
+        <Popover
+          trapFocus
+          clickOutsideEvents={["mouseup"]}
+          width="target"
+          position="bottom-start"
+          offset={{ mainAxis: 0, crossAxis: -10 }}
+        >
           <Popover.Target>
             <ActionIcon
               variant="transparent"
@@ -102,13 +108,12 @@ export default function PhoneInput(props: PhoneInput) {
               <TriangleDownIcon width="25px" height="20px" color="#5C5C5C" />
             </ActionIcon>
           </Popover.Target>
-          <Popover.Dropdown className="text-[#212121] h-[300px] shadow-none border-none bg-transparent ur-phone-input__popover !mt-0">
+          <Popover.Dropdown className="ur-phone-input__popover--dropdown">
             <Select
               onDropdownClose={() => {
                 // debugger;
               }}
               checkIconPosition="left"
-              leftSection={selected ? flagIcon(selected?.isoCode) : null}
               onChange={(value: any) => {
                 setSelected(Country.getCountryByCode(value)!);
               }}

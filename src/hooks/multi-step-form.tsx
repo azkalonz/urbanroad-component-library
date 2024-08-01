@@ -3,7 +3,13 @@ import { useForm } from "@mantine/form";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import { useEffect, useMemo, useState } from "react";
 
-export default function useMultiStepForm(formData: any, stepErrors?: { [key: number]: { fields: string[] } }) {
+interface MultiStepFormParams {
+  formData: any;
+  stepErrors?: { [key: number]: { fields: string[] } };
+}
+
+export default function useMultiStepForm(params: MultiStepFormParams) {
+  const { formData, stepErrors } = params;
   const form = useForm(formData);
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
