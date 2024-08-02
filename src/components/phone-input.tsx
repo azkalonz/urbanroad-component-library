@@ -85,11 +85,7 @@ export default function PhoneInput(props: PhoneInput) {
   return (
     <InputWrapper>
       <InputLabel required={props.required}>Phone number</InputLabel>
-      <div
-        className={clsx("ur-phone-input flex items-center border border-[#E4E4E4] rounded-[7px]", containerCn)}
-        style={containerStyle}
-        {...restContainerProps}
-      >
+      <div className={clsx("ur-phone-input", containerCn)} style={containerStyle} {...restContainerProps}>
         <Popover
           trapFocus
           clickOutsideEvents={["mouseup"]}

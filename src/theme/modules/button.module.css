@@ -1,22 +1,17 @@
 .label {
   text-transform: uppercase;
-  &:global(.ur-pill-button__label) {
+}
+  .label:global(.ur-pill-button__label) {
     color: var(--text-color);
     font-size: 16px;
     font-weight: 500;
-    &:global(.light) {
-      display: none;
-    }
   }
-  &:global(.ur-link-button__label) {
+  .label:global(.ur-link-button__label) {
     --text-color: var(--link-color);
     text-decoration: underline;
   }
-}
 
-.root {
-  &:global(.ur-pill-button--light) {
+.root:global(.ur-pill-button--light) {
     --mantine-primary-color-filled: var(--primary-button-color);
     --mantine-primary-color-filled-hover: var(--primary-button-color);
   }
-}

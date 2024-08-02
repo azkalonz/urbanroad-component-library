@@ -1,0 +1,29 @@
+.stepIcon {
+  @apply w-auto h-auto min-h-0 px-[12px] py-[2px];
+  color: var(--text-color);
+  &[data-progress="true"] {
+    border: none;
+    background-color: var(--primary-button-color);
+  }
+  &[data-completed] {
+    background-color: transparent;
+    border: 1.5px solid var(--primary-button-color);
+    & > * {
+      position: relative;
+    }
+  }
+  &:not([data-progress]):not([data-completed]) {
+    background-color: transparent;
+    border: 1.5px solid var(--primary-button-color);
+  }
+}
+.separator {
+  @apply m-0 w-[20px] h-[1.5px];
+}
+.stepCompletedIcon {
+  @apply !duration-0;
+  color: var(--text-color);
+}
+.separator {
+  background: var(--primary-button-color);
+}

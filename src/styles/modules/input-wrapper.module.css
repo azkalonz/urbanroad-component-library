@@ -6,3 +6,6 @@
 .required {
   --input-asterisk-color: var(--text-color);
 }
+.label {
+  @apply text-[14px] leading-[19.6px] mb-[4px];
+}

@@ -1,9 +1,9 @@
 {
-  "name": "urbanroad-components-library",
+  "name": "urbanroad-component-library",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"react-app-rewired start\" \"npx tailwindcss -o ./src/tailwind.css --watch\"",
+    "start": "concurrently \"react-app-rewired start\" \"postcss ./src/styles/modules/*.css --dir ./src/theme/modules --watch\" \"postcss ./src/styles/global.css -o ./src/global.css --watch\"",
     "build": "webpack --config webpack.config.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -18,8 +18,7 @@
     "country-state-city": "^3.2.1",
     "libphonenumber-js": "^1.11.5",
     "react": "^18",
-    "react-dom": "^18",
-    "react-scripts": "^5.0.1"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",
@@ -46,11 +45,12 @@
     "eslint": "^8",
     "eslint-plugin-storybook": "^0.8.0",
     "postcss": "^8.4.40",
+    "postcss-import": "^16.1.0",
+    "postcss-nested": "^6.2.0",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
-    "sass": "^1.77.8",
     "storybook": "^8.2.6",
     "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.1",

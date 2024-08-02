@@ -1,4 +1,12 @@
+.root {
+  margin: 0;
+}
+
+.input {
+  @apply rounded-t-md;
+}
 .option {
+  @apply py-2;
   border-radius: 0;
   &:hover {
     background-color: var(--primary-hover-color);

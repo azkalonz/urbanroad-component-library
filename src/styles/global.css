@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --text-color: #212121;
   --link-color: #d58967;
@@ -17,26 +21,8 @@ body {
     fill: var(--dark-grey);
   }
 }
-
-.stepper-icon {
-  &[data-progress="true"] {
-    border: none;
-    background-color: var(--primary-button-color);
-  }
-  &[data-completed] {
-    background-color: transparent;
-    border: 1.5px solid var(--primary-button-color);
-    & > * {
-      position: relative;
-    }
-  }
-  &:not([data-progress]):not([data-completed]) {
-    background-color: transparent;
-    border: 1.5px solid var(--primary-button-color);
-  }
-}
-
 .ur-phone-input {
+  @apply flex items-center border rounded-[7px];
   --phone-input-width: 100%;
   width: var(--phone-input-width);
   background: var(--white-color);
@@ -46,9 +32,8 @@ body {
     width: 100%;
   }
   &__country-code {
-    $border: 1px solid rgba(102, 102, 102, 0.2);
-    border-left: $border;
-    border-right: $border;
+    border-left: 1px solid rgba(102, 102, 102, 0.2);
+    border-right: 1px solid rgba(102, 102, 102, 0.2);
     padding: 0 8px;
     margin: 0 2px;
   }
