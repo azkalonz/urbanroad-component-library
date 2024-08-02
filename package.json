@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"react-app-rewired start\" \"postcss ./src/styles/modules/*.css --dir ./src/theme/modules --watch\" \"postcss ./src/styles/global.css -o ./src/global.css --watch\"",
-    "build": "webpack --config webpack.config.js",
+    "build": "concurrently  \"npm run build-css\" \"webpack --config webpack.config.js\"",
+    "build-css": "concurrently \"postcss ./src/styles/modules/*.css --dir ./src/theme/modules\" \"postcss ./src/styles/global.css -o ./src/global.css\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
