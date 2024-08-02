@@ -31,6 +31,7 @@ export default function useMultiStepForm(params: MultiStepFormParams) {
     let stepHasErrors = allStepErrors[active];
     if (!stepHasErrors) {
       if (goNextStep) nextStep();
+      form.clearErrors();
       return callback();
     } else {
       let firstStepError = getKeyByValue(allStepErrors, true);
@@ -47,6 +48,7 @@ export default function useMultiStepForm(params: MultiStepFormParams) {
     if (typeof index !== 'number') {
       validate();
     } else {
+      form.clearErrors();
       setActive(index);
     }
   };
@@ -105,13 +107,7 @@ export default function useMultiStepForm(params: MultiStepFormParams) {
         return (
           <>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <Stepper
-                active={active}
-                onStepClick={(index) => {
-                  form.clearErrors();
-                  handleNextStep(index);
-                }}
-              >
+              <Stepper active={active} onStepClick={handleNextStep}>
                 {children}
               </Stepper>
               {active === stepsCount - 1 && completeComponent}

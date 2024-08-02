@@ -525,8 +525,8 @@ video {
 .hidden {
   display: none;
 }
-.h-auto {
-  height: auto;
+.\!h-auto {
+  height: auto !important;
 }
 .min-h-\[48px\] {
   min-height: 48px;
@@ -737,4 +737,4 @@ body {
 }
 
 
-/*# sourceMappingURL=main.8cd93f85.css.map*/
+/*# sourceMappingURL=main.40451bc0.css.map*/

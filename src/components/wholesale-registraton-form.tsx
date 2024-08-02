@@ -9,6 +9,7 @@ import {
   Drawer,
   Flex,
   Group,
+  MultiSelect,
   Select,
   Stepper,
   TagsInput,
@@ -44,12 +45,19 @@ export default function WholesaleRegistrationForm() {
         facebook_url: '',
         instagram_url: '',
         website_url: '',
-        lead_source: '',
+        lead_source: [],
+        referred_by: '',
+        other_lead_source: '',
         interest: [],
         trade_references: [],
       },
       validate: {
         email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+        referred_by: (value: string, values: any) =>
+          values.lead_source.includes('Referral') ? (value?.length ? null : 'Required') : null,
+        other_lead_source: (value: string, values: any) =>
+          values.lead_source.includes('Other') ? (value?.length ? null : 'Required') : null,
+        website_url: (value: string) => (/(https?:\/\/[^\s]+)/g.test(value) ? null : 'Invalid URL'),
         phone: (value: string) => {
           let { number_code } = parsePhone(value);
           return isValidNumber(number_code) ? null : 'Invalid phone number';
@@ -66,7 +74,6 @@ export default function WholesaleRegistrationForm() {
           'postcode',
           'abn_acn',
           'business_type',
-          'website_url',
           'lead_source',
           'interest',
           'trade_references',
@@ -81,7 +88,7 @@ export default function WholesaleRegistrationForm() {
         fields: ['company_name', 'country', 'suburb', 'state', 'address', 'postcode', 'abn_acn', 'business_type'],
       },
       2: {
-        fields: ['website_url', 'lead_source', 'interest', 'trade_references'],
+        fields: ['website_url', 'lead_source', 'interest', 'trade_references', 'referred_by', 'other_lead_source'],
       },
     },
   });
@@ -134,6 +141,15 @@ export default function WholesaleRegistrationForm() {
   }, [form.getValues().address]);
 
   useEffect(() => {
+    if (!form.getValues().lead_source.includes('Other') && form.getValues().other_lead_source) {
+      form.setFieldValue('other_lead_source', '');
+    }
+    if (!form.getValues().lead_source.includes('Referral') && form.getValues().referred_by) {
+      form.setFieldValue('referred_by', '');
+    }
+  }, [form.getValues().lead_source]);
+
+  useEffect(() => {
     if (states.length <= 1) {
       form.setFieldValue('state', '-');
     }
@@ -182,8 +198,8 @@ export default function WholesaleRegistrationForm() {
           />
           <TextInput
             required
-            placeholder="wholesaler@urbanroad.com.au"
-            label="Enter a valid email address"
+            placeholder="Enter a valid email address"
+            label="Email Address"
             key={form.key('email')}
             {...form.getInputProps('email')}
           />
@@ -280,15 +296,35 @@ export default function WholesaleRegistrationForm() {
             required
             w="100%"
           />
-          <Select
+          <MultiSelect
             {...form.getInputProps('lead_source')}
             label="How did you hear about us?"
             required
             data={leadSourceOptions}
             searchable
-            multiple
             mb="8px"
+            classNames={{
+              input: '!h-auto min-h-[48px] flex items-center',
+            }}
           />
+          {form.getValues().lead_source.includes('Referral') && (
+            <TextInput
+              {...form.getInputProps('referred_by')}
+              placeholder="Referee / Link"
+              label="Enter referee or provide a link"
+              required
+              w="100%"
+            />
+          )}
+          {form.getValues().lead_source.includes('Other') && (
+            <TextInput
+              {...form.getInputProps('other_lead_source')}
+              placeholder="Other (Please Specify)"
+              label="Enter additional information"
+              required
+              w="100%"
+            />
+          )}
           <Checkbox.Group
             {...form.getInputProps('interest')}
             label="What products interest you the most?"
@@ -309,12 +345,12 @@ export default function WholesaleRegistrationForm() {
           </Checkbox.Group>
           <TagsInput
             {...form.getInputProps('trade_references')}
-            maxTags={2}
+            // maxTags={2}
             label="Trade References"
             required
             placeholder="Please provide two trade references"
             classNames={{
-              input: 'h-auto min-h-[48px] flex items-center',
+              input: '!h-auto min-h-[48px] flex items-center',
             }}
           />
           <Checkbox

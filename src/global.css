@@ -525,8 +525,8 @@ video {
 .hidden {
   display: none;
 }
-.h-auto {
-  height: auto;
+.\!h-auto {
+  height: auto !important;
 }
 .min-h-\[48px\] {
   min-height: 48px;
