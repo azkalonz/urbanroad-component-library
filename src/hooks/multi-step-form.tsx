@@ -1,8 +1,8 @@
-import { getKeyByValue } from "@/utils";
-import { Button, Group, Stepper, Text } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { ChevronLeftIcon } from "@radix-ui/react-icons";
-import { useCallback, useMemo, useState } from "react";
+import { getKeyByValue } from '@/utils';
+import { Button, Group, Stepper, Text } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { ChevronLeftIcon } from '@radix-ui/react-icons';
+import { useMemo, useState } from 'react';
 
 interface MultiStepFormParams {
   formData: any;
@@ -44,7 +44,7 @@ export default function useMultiStepForm(params: MultiStepFormParams) {
   };
 
   const handleNextStep = (index?: number) => {
-    if (typeof index !== "number") {
+    if (typeof index !== 'number') {
       validate();
     } else {
       setActive(index);
@@ -74,7 +74,7 @@ export default function useMultiStepForm(params: MultiStepFormParams) {
             p={0}
             className="shrink-0"
             classNames={{
-              label: "ur-link-button__label",
+              label: 'ur-link-button__label',
             }}
             variant="transparent"
             onClick={prevStep}
@@ -88,7 +88,7 @@ export default function useMultiStepForm(params: MultiStepFormParams) {
               onClick={() => handleNextStep()}
               fullWidth
               radius="100px"
-              classNames={{ label: "ur-pill-button__label" }}
+              classNames={{ label: 'ur-pill-button__label' }}
             >
               Next
             </Button>

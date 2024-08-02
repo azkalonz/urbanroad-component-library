@@ -1,4 +1,4 @@
-import { parsePhone } from "@/utils";
+import { parsePhone } from '@/utils';
 import {
   ActionIcon,
   Group,
@@ -11,15 +11,15 @@ import {
   Text,
   TextInput,
   TextInputProps,
-} from "@mantine/core";
-import { TriangleDownIcon } from "@radix-ui/react-icons";
-import clsx from "clsx";
-import { Country, ICountry } from "country-state-city";
-import { CountryCode, isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
-import { useEffect, useMemo, useRef, useState } from "react";
-const flags = require("../countries-flags/index");
+} from '@mantine/core';
+import { TriangleDownIcon } from '@radix-ui/react-icons';
+import clsx from 'clsx';
+import { Country, ICountry } from 'country-state-city';
+import { CountryCode, isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
+import { useEffect, useMemo, useRef, useState } from 'react';
+const flags = require('../countries-flags/index');
 
-interface PhoneInput extends Omit<TextInputProps, "children" | "variant" | "onChange"> {
+interface PhoneInput extends Omit<TextInputProps, 'children' | 'variant' | 'onChange'> {
   containerProps?: React.ButtonHTMLAttributes<HTMLDivElement>;
   error?: any;
   onBlur?: () => void;
@@ -37,7 +37,7 @@ export default function PhoneInput(props: PhoneInput) {
     value: remoteValue,
     containerProps = {},
     className: inputCn,
-    placeholder: inputPlaceholder = "",
+    placeholder: inputPlaceholder = '',
     ...restInputProps
   } = props;
   const countries = useMemo(
@@ -45,16 +45,16 @@ export default function PhoneInput(props: PhoneInput) {
     []
   );
   const [value, setValue] = useState<string>(parsePhone(remoteValue).number);
-  const [selected, setSelected] = useState<ICountry>(Country.getCountryByCode("AU")!);
+  const [selected, setSelected] = useState<ICountry>(Country.getCountryByCode('AU')!);
   const selectRef = useRef<any>();
   const { className: containerCn, style: containerStyle, ...restContainerProps } = containerProps;
   const flagIcon = (code: string) => (
     <span
       dangerouslySetInnerHTML={{ __html: flags[code] }}
-      style={{ width: "32px", display: "block", borderRadius: "2px", overflow: "hidden" }}
+      style={{ width: '32px', display: 'block', borderRadius: '2px', overflow: 'hidden' }}
     />
   );
-  const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {
+  const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) => {
     const { items }: any = option;
     return (
       <Group flex="1" gap="xs">
@@ -64,8 +64,8 @@ export default function PhoneInput(props: PhoneInput) {
     );
   };
 
-  const phoneCode = (phoneCode: string) => (phoneCode.indexOf("+") >= 0 ? phoneCode : "+" + phoneCode);
-  const getFormattedValue = (val = value) => (val ? "(" + phoneCode(selected.phonecode) + ") " + val : "");
+  const phoneCode = (phoneCode: string) => (phoneCode.indexOf('+') >= 0 ? phoneCode : '+' + phoneCode);
+  const getFormattedValue = (val = value) => (val ? '(' + phoneCode(selected.phonecode) + ') ' + val : '');
 
   useEffect(() => {
     if (remoteValue) {
@@ -85,10 +85,10 @@ export default function PhoneInput(props: PhoneInput) {
   return (
     <InputWrapper>
       <InputLabel required={props.required}>Phone number</InputLabel>
-      <div className={clsx("ur-phone-input", containerCn)} style={containerStyle} {...restContainerProps}>
+      <div className={clsx('ur-phone-input', containerCn)} style={containerStyle} {...restContainerProps}>
         <Popover
           trapFocus
-          clickOutsideEvents={["mouseup"]}
+          clickOutsideEvents={['mouseup']}
           width="target"
           position="bottom-start"
           offset={{ mainAxis: 0, crossAxis: -10 }}
@@ -97,19 +97,19 @@ export default function PhoneInput(props: PhoneInput) {
             <ActionIcon
               variant="transparent"
               style={{
-                "--ai-size": "55px",
+                '--ai-size': '55px',
               }}
             >
-              {flagIcon(selected?.isoCode || "")}
+              {flagIcon(selected?.isoCode || '')}
               <TriangleDownIcon width="25px" height="20px" color="#5C5C5C" />
             </ActionIcon>
           </Popover.Target>
           <Popover.Dropdown className="ur-phone-input__popover--dropdown">
             <Select
               classNames={{
-                root: "ur-phone-input__select",
-                input: "ur-phone-input__select--input",
-                dropdown: "ur-phone-input__select--dropdown",
+                root: 'ur-phone-input__select',
+                input: 'ur-phone-input__select--input',
+                dropdown: 'ur-phone-input__select--dropdown',
               }}
               onDropdownClose={() => {
                 // debugger;
@@ -134,13 +134,13 @@ export default function PhoneInput(props: PhoneInput) {
         </Popover>
         <Text className="ur-phone-input__country-code text-nowrap">{phoneCode(selected.phonecode)}</Text>
         <TextInput
-          className={clsx(inputCn, "ur-phone-input__input !mb-0")}
+          className={clsx(inputCn, 'ur-phone-input__input !mb-0')}
           {...(error
             ? {
                 styles: {
                   input: {
-                    color: "var(--mantine-color-error)",
-                    "--input-placeholder-color": "var(--mantine-color-error)",
+                    color: 'var(--mantine-color-error)',
+                    '--input-placeholder-color': 'var(--mantine-color-error)',
                   },
                 },
               }
@@ -154,7 +154,7 @@ export default function PhoneInput(props: PhoneInput) {
             let isValid = isValidPhoneNumber(value, code);
             if (isValid) {
               let phoneNumber = parsePhoneNumber(value, code);
-              value = phoneNumber.format("NATIONAL");
+              value = phoneNumber.format('NATIONAL');
             }
             if (onChange) {
               onChange(getFormattedValue(value));
@@ -164,7 +164,7 @@ export default function PhoneInput(props: PhoneInput) {
           {...restInputProps}
         />
       </div>
-      {error && <InputError style={{ marginTop: "calc(var(--mantine-spacing-xs) / 2)" }}>{error}</InputError>}
+      {error && <InputError style={{ marginTop: 'calc(var(--mantine-spacing-xs) / 2)' }}>{error}</InputError>}
     </InputWrapper>
   );
 }

@@ -16,4 +16,4 @@ export default `<svg viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/
 </clipPath>
 </defs>
 </svg>
-`
+`;
