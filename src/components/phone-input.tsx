@@ -40,8 +40,16 @@ export default function PhoneInput(props: PhoneInput) {
     placeholder: inputPlaceholder = '',
     ...restInputProps
   } = props;
+  const phoneCode = (phoneCode: string) => (phoneCode.indexOf('+') >= 0 ? phoneCode : '+' + phoneCode);
   const countries = useMemo(
-    () => Country.getAllCountries().sort((a, b) => a.phonecode.charCodeAt(0) - b.phonecode.charCodeAt(0)),
+    () =>
+      Country.getAllCountries()
+        .sort((a, b) => a.phonecode.charCodeAt(0) - b.phonecode.charCodeAt(0))
+        .map((c, i) => ({
+          label: phoneCode(c.phonecode),
+          value: c?.isoCode,
+          items: c,
+        })),
     []
   );
   const [value, setValue] = useState<string>(parsePhone(remoteValue).number);
@@ -64,7 +72,6 @@ export default function PhoneInput(props: PhoneInput) {
     );
   };
 
-  const phoneCode = (phoneCode: string) => (phoneCode.indexOf('+') >= 0 ? phoneCode : '+' + phoneCode);
   const getFormattedValue = (val = value) => (val ? '(' + phoneCode(selected.phonecode) + ') ' + val : '');
 
   useEffect(() => {
@@ -119,11 +126,7 @@ export default function PhoneInput(props: PhoneInput) {
               onChange={(value: any) => {
                 setSelected(Country.getCountryByCode(value)!);
               }}
-              data={countries.map((c, i) => ({
-                label: phoneCode(c.phonecode),
-                value: c?.isoCode,
-                items: c,
-              }))}
+              data={countries}
               value={selected?.isoCode}
               ref={selectRef}
               searchable

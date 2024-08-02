@@ -20,7 +20,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { Country, State } from 'country-state-city';
 import { isValidNumber } from 'libphonenumber-js';
 import { useEffect, useMemo } from 'react';
-const { parseAddress } = require('addresser');
+// import { parseAddress } from 'addresser';
 
 export default function WholesaleRegistrationForm() {
   const { MultiStepForm, form, makeStepIcon, Navigation, validate } = useMultiStepForm({
@@ -107,7 +107,13 @@ export default function WholesaleRegistrationForm() {
     'Other',
   ];
   const countries = useMemo(
-    () => Country.getAllCountries().sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0)),
+    () =>
+      Country.getAllCountries()
+        .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
+        .map((q) => ({
+          value: q.isoCode,
+          label: q.name,
+        })),
     []
   );
   const states = useMemo(
@@ -120,25 +126,25 @@ export default function WholesaleRegistrationForm() {
     []
   );
 
-  useEffect(() => {
-    let address = form.getValues().address;
-    if (address.length) {
-      try {
-        address = parseAddress(address);
-        let state = State.getAllStates().find((q) => q.name === address.stateName);
-        address = {
-          postcode: address.zipCode,
-          suburb: address.placeName,
-          state: state?.name,
-          country: Country.getCountryByCode(state?.countryCode!)?.isoCode,
-        };
+  // useEffect(() => {
+  //   let address = form.getValues().address;
+  //   if (address.length) {
+  //     try {
+  //       address = parseAddress(address);
+  //       let s = state.getAllStates().find((q) => q.name === address.stateName);
+  //       address = {
+  //         postcode: address.zipCode,
+  //         suburb: address.placeName,
+  //         state: s?.name,
+  //         country: country.getCountryByCode(s?.countryCode!)?.isoCode,
+  //       };
 
-        Object.keys(address).forEach((field) => {
-          form.setFieldValue(field, address[field]);
-        });
-      } catch (e) {}
-    }
-  }, [form.getValues().address]);
+  //       Object.keys(address).forEach((field) => {
+  //         form.setFieldValue(field, address[field]);
+  //       });
+  //     } catch (e) {}
+  //   }
+  // }, [form.getValues().address]);
 
   useEffect(() => {
     if (!form.getValues().lead_source.includes('Other') && form.getValues().other_lead_source) {
@@ -227,10 +233,7 @@ export default function WholesaleRegistrationForm() {
               required
               allowDeselect={false}
               withCheckIcon={false}
-              data={countries.map((q) => ({
-                value: q.isoCode,
-                label: q.name,
-              }))}
+              data={countries}
               key={form.key('country')}
               searchable
               w="100%"
