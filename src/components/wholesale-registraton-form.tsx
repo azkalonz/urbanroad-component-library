@@ -1,12 +1,11 @@
 import PhoneInput from '@/components/phone-input';
 import useMultiStepForm from '@/hooks/multi-step-form';
+import { MultiStepFormProps } from '@/types/form';
 import { parsePhone } from '@/utils';
 import {
   Anchor,
   Button,
   Checkbox,
-  Code,
-  Drawer,
   Flex,
   Group,
   MultiSelect,
@@ -17,18 +16,42 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { parseAddress } from 'addresser';
 import { Country, State } from 'country-state-city';
 import { isValidNumber } from 'libphonenumber-js';
-import { useEffect, useMemo } from 'react';
-// import { parseAddress } from 'addresser';
+import { useEffect, useMemo, useRef } from 'react';
 
-export default function WholesaleRegistrationForm() {
-  const { MultiStepForm, form, makeStepIcon, Navigation, validate } = useMultiStepForm({
+export default function WholesaleRegistrationForm(formParams: MultiStepFormProps) {
+  const {
+    businessTypeOptions = [
+      'Stockist – Ecommerce',
+      'Stockist – Store Front',
+      'Interior Designer',
+      'Property Stylist',
+      'Commercial',
+      'Media',
+    ],
+    interestOptions = ['Wall Art', 'Wallpaper', 'Homewares', 'Furniture', 'Commercial'],
+    leadSourceOptions = [
+      'Google Search',
+      'Other Search Engine',
+      'Word of Mouth',
+      'Referral',
+      'Email',
+      'Facebook',
+      'Instagram',
+      'Pinterest',
+      'TikTok',
+      'LinkedIn',
+      'Other',
+    ],
+  } = formParams;
+  const { MultiStepForm, form, makeStepIcon, Navigation, getFieldOptions, validate } = useMultiStepForm({
     stepsCount: 3,
+    ...formParams,
     formData: {
       initialValues: {
         subscribe_to_newsletter: false,
-        subscribe_to_dropshipping: false,
         agree_to_terms_of_trade: false,
         first_name: '',
         last_name: '',
@@ -57,7 +80,20 @@ export default function WholesaleRegistrationForm() {
           values.lead_source.includes('Referral') ? (value?.length ? null : 'Required') : null,
         other_lead_source: (value: string, values: any) =>
           values.lead_source.includes('Other') ? (value?.length ? null : 'Required') : null,
-        website_url: (value: string) => (/(https?:\/\/[^\s]+)/g.test(value) ? null : 'Invalid URL'),
+        website_url: (value: string) =>
+          /(https?:\/\/[^\s]+)/g.test(value) ? null : "The URL must start with 'http://' or 'https://'.",
+        facebook_url: (value: string) =>
+          !value?.length
+            ? null
+            : /(https?:\/\/[^\s]+)/g.test(value)
+              ? null
+              : "The URL must start with 'http://' or 'https://'.",
+        instagram_url: (value: string) =>
+          !value?.length
+            ? null
+            : /(https?:\/\/[^\s]+)/g.test(value)
+              ? null
+              : "The URL must start with 'http://' or 'https://'.",
         phone: (value: string) => {
           let { number_code } = parsePhone(value);
           return isValidNumber(number_code) ? null : 'Invalid phone number';
@@ -93,19 +129,7 @@ export default function WholesaleRegistrationForm() {
     },
   });
   const [opened, { open, close }] = useDisclosure(false);
-  const leadSourceOptions = [
-    'Google Search',
-    'Other Search Engine',
-    'Word of Mouth',
-    'Referral',
-    'Email',
-    'Facebook',
-    'Instagram',
-    'Pinterest',
-    'TikTok',
-    'LinkedIn',
-    'Other',
-  ];
+  const leadSourceRef = useRef<HTMLInputElement>(null);
   const countries = useMemo(
     () =>
       Country.getAllCountries()
@@ -126,25 +150,25 @@ export default function WholesaleRegistrationForm() {
     []
   );
 
-  // useEffect(() => {
-  //   let address = form.getValues().address;
-  //   if (address.length) {
-  //     try {
-  //       address = parseAddress(address);
-  //       let s = state.getAllStates().find((q) => q.name === address.stateName);
-  //       address = {
-  //         postcode: address.zipCode,
-  //         suburb: address.placeName,
-  //         state: s?.name,
-  //         country: country.getCountryByCode(s?.countryCode!)?.isoCode,
-  //       };
+  useEffect(() => {
+    let address = form.getValues().address;
+    if (address.length) {
+      try {
+        address = parseAddress(address);
+        let s = State.getAllStates().find((q) => q.name === address.stateName);
+        address = {
+          postcode: address.zipCode,
+          suburb: address.placeName,
+          state: s?.name,
+          country: Country.getCountryByCode(s?.countryCode!)?.isoCode,
+        };
 
-  //       Object.keys(address).forEach((field) => {
-  //         form.setFieldValue(field, address[field]);
-  //       });
-  //     } catch (e) {}
-  //   }
-  // }, [form.getValues().address]);
+        Object.keys(address).forEach((field) => {
+          form.setFieldValue(field, address[field]);
+        });
+      } catch (e) {}
+    }
+  }, [form.getValues().address]);
 
   useEffect(() => {
     if (!form.getValues().lead_source.includes('Other') && form.getValues().other_lead_source) {
@@ -163,21 +187,13 @@ export default function WholesaleRegistrationForm() {
 
   return (
     <div className="max-w-sm m-[0_auto]">
-      <Drawer opened={opened} onClose={close} title="Form Values">
-        <pre>
-          <Code>{JSON.stringify(form.getValues(), null, 4)}</Code>
-        </pre>
-      </Drawer>
       <MultiStepForm
         completeComponent={
           <Navigation>
             <Button
-              onClick={() => {
-                validate(false, (err) => {
-                  if (!err) {
-                    open();
-                  }
-                });
+              type="submit"
+              onClick={(e) => {
+                return false;
               }}
               fullWidth
               radius="100px"
@@ -192,44 +208,92 @@ export default function WholesaleRegistrationForm() {
           <FormTitle />
           <TextInput
             {...form.getInputProps('first_name')}
-            placeholder="Enter your First Name"
-            label="First Name"
+            {...getFieldOptions('first_name', {
+              label: 'First Name',
+              placeholder: 'Enter your First Name',
+            })}
             required
           />
           <TextInput
             {...form.getInputProps('last_name')}
-            placeholder="Enter your Last Name"
-            label="Last Name"
+            {...getFieldOptions('last_name', {
+              label: 'Last Name',
+              placeholder: 'Enter your Last Name',
+            })}
             required
           />
           <TextInput
-            required
-            placeholder="Enter a valid email address"
-            label="Email Address"
-            key={form.key('email')}
             {...form.getInputProps('email')}
+            {...getFieldOptions('email', {
+              label: 'Email Address',
+              placeholder: 'Enter a vlaid email address',
+            })}
+            required
+            key={form.key('email')}
           />
-          <PhoneInput {...form.getInputProps('phone')} placeholder="Phone number" width="100%" required />
+          <PhoneInput
+            {...form.getInputProps('phone')}
+            {...getFieldOptions('phone', {
+              label: 'Phone Number',
+              placeholder: 'Phone Number',
+            })}
+            width="100%"
+            required
+          />
           <Checkbox
             {...form.getInputProps('subscribe_to_newsletter')}
+            {...getFieldOptions('subscribe_to_newsletter', {
+              label: 'I consent to receive the Urban Road newsletter',
+            })}
             checked={form.getValues().subscribe_to_newsletter}
             className="mt-[16px]"
-            label="I consent to receive the Urban Road newsletter"
           />
         </Stepper.Step>
         <Stepper.Step {...makeStepIcon(2, 'Company details')}>
           <FormTitle />
-          <TextInput {...form.getInputProps('company_name')} placeholder="Company name" label="Company name" required />
-          <TextInput {...form.getInputProps('address')} placeholder="Address" label="Billing Address" required />
+          <TextInput
+            {...form.getInputProps('company_name')}
+            {...getFieldOptions('company_name', {
+              label: 'Company name',
+              placeholder: 'Company name',
+            })}
+            required
+          />
+          <TextInput
+            {...form.getInputProps('address')}
+            {...getFieldOptions('address', {
+              label: 'Billing Address',
+              placeholder: 'Address',
+            })}
+            required
+          />
           <Flex gap="8px" mb="8px">
-            <TextInput {...form.getInputProps('postcode')} placeholder="Postcode" label="Postcode" required w="100%" />
-            <TextInput {...form.getInputProps('suburb')} placeholder="Suburb" label="Suburb" required w="100%" />
+            <TextInput
+              {...form.getInputProps('postcode')}
+              {...getFieldOptions('postcode', {
+                label: 'Postcode',
+                placeholder: 'Postcode',
+              })}
+              required
+              w="100%"
+            />
+            <TextInput
+              {...form.getInputProps('suburb')}
+              {...getFieldOptions('suburb', {
+                label: 'Suburb',
+                placeholder: 'Suburb',
+              })}
+              required
+              w="100%"
+            />
           </Flex>
           <Flex gap="8px" mb="8px">
             <Select
               {...form.getInputProps('country')}
-              label="Country"
-              placeholder="Country"
+              {...getFieldOptions('country', {
+                label: 'Country',
+                placeholder: 'Country',
+              })}
               required
               allowDeselect={false}
               withCheckIcon={false}
@@ -240,8 +304,10 @@ export default function WholesaleRegistrationForm() {
             />
             <Select
               {...form.getInputProps('state')}
-              label="State"
-              placeholder="State"
+              {...getFieldOptions('state', {
+                label: 'State',
+                placeholder: 'State',
+              })}
               required
               allowDeselect={false}
               withCheckIcon={false}
@@ -259,20 +325,23 @@ export default function WholesaleRegistrationForm() {
               w="100%"
             />
           </Flex>
-          <TextInput {...form.getInputProps('abn_acn')} placeholder="ABN / ACN" label="ABN / ACN" required w="100%" />
+          <TextInput
+            {...form.getInputProps('abn_acn')}
+            {...getFieldOptions('abn_acn', {
+              label: 'ABN / ACN',
+              placeholder: 'ABN / ACN',
+            })}
+            required
+            w="100%"
+          />
           <Select
             {...form.getInputProps('business_type')}
-            label="Business Type"
+            {...getFieldOptions('business_type', {
+              label: 'Business Type',
+              placeholder: 'Select your Business Type',
+            })}
             required
-            data={[
-              'Stockist – Ecommerce',
-              'Stockist – Store Front',
-              'Interior Designer',
-              'Property Stylist',
-              'Commercial',
-              'Media',
-            ]}
-            placeholder="Select your Business Type"
+            data={businessTypeOptions}
             limit={100}
             key={form.key('state')}
             searchable
@@ -282,26 +351,39 @@ export default function WholesaleRegistrationForm() {
           <FormTitle />
           <TextInput
             {...form.getInputProps('facebook_url')}
-            placeholder="Facebook"
-            label="Facebook URL (optional)"
+            {...getFieldOptions('facebook_url', {
+              label: 'Facebook URL (optional)',
+              placeholder: 'Facebook',
+            })}
             w="100%"
           />
           <TextInput
             {...form.getInputProps('instagram_url')}
-            placeholder="Instagram"
-            label="Instagram URL (optional)"
+            {...getFieldOptions('instagram_url', {
+              label: 'Instagram URL (optional)',
+              placeholder: 'Instagram',
+            })}
             w="100%"
           />
           <TextInput
             {...form.getInputProps('website_url')}
-            placeholder="yourwebsite.com.au"
-            label="Website URL"
+            {...getFieldOptions('website_url', {
+              label: 'Website URL',
+              placeholder: 'https://yourwebsite.com.au',
+            })}
             required
             w="100%"
           />
           <MultiSelect
             {...form.getInputProps('lead_source')}
-            label="How did you hear about us?"
+            {...getFieldOptions('lead_source', {
+              label: 'How did you hear about us?',
+            })}
+            ref={leadSourceRef}
+            onChange={(value) => {
+              form.getInputProps('lead_source').onChange(value);
+              leadSourceRef.current?.blur();
+            }}
             required
             data={leadSourceOptions}
             searchable
@@ -313,8 +395,10 @@ export default function WholesaleRegistrationForm() {
           {form.getValues().lead_source.includes('Referral') && (
             <TextInput
               {...form.getInputProps('referred_by')}
-              placeholder="Referee / Link"
-              label="Enter referee or provide a link"
+              {...getFieldOptions('referred_by', {
+                label: 'Enter referee or provide a link',
+                placeholder: 'Referee / Link',
+              })}
               required
               w="100%"
             />
@@ -322,15 +406,19 @@ export default function WholesaleRegistrationForm() {
           {form.getValues().lead_source.includes('Other') && (
             <TextInput
               {...form.getInputProps('other_lead_source')}
-              placeholder="Other (Please Specify)"
-              label="Enter additional information"
+              {...getFieldOptions('other_lead_source', {
+                label: 'Enter additional information',
+                placeholder: 'Other (Please Specify)',
+              })}
               required
               w="100%"
             />
           )}
           <Checkbox.Group
             {...form.getInputProps('interest')}
-            label="What products interest you the most?"
+            {...getFieldOptions('interest', {
+              label: 'What products interest you the most?',
+            })}
             withAsterisk
             mb="8px"
           >
@@ -341,31 +429,36 @@ export default function WholesaleRegistrationForm() {
                 gridTemplateColumns: 'repeat(3,1fr)',
               }}
             >
-              {['Wall Art', 'Wallpaper', 'Homewares', 'Furniture', 'Commercial'].map((interest: string) => (
+              {interestOptions.map((interest: string) => (
                 <Checkbox value={interest} label={interest} key={interest} />
               ))}
             </Group>
           </Checkbox.Group>
           <TagsInput
             {...form.getInputProps('trade_references')}
-            // maxTags={2}
-            label="Trade References"
+            maxTags={2}
+            {...getFieldOptions('trade_references', {
+              label: 'Trade References',
+              placeholder: 'Please provide two trade references',
+            })}
             required
-            placeholder="Please provide two trade references"
             classNames={{
               input: '!h-auto min-h-[48px] flex items-center',
             }}
           />
           <Checkbox
             {...form.getInputProps('agree_to_terms_of_trade')}
+            {...getFieldOptions('agree_to_terms_of_trade', {
+              label: (
+                <Text>
+                  I agree to the Urban Road <Anchor href="#">Terms of Trade</Anchor>
+                </Text>
+              ),
+              placeholder: 'Please provide two trade references',
+            })}
             checked={form.getValues().agree_to_terms_of_trade}
             mt="16px"
             className="mt-[8px]"
-            label={
-              <Text>
-                I agree to the Urban Road <Anchor href="#">Terms of Trade</Anchor>
-              </Text>
-            }
           />
         </Stepper.Step>
         <Stepper.Completed>

@@ -6,7 +6,7 @@
     <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@mantine/core@7.11.2/styles.css" />
-  <script defer src="../js/runtime.f0218b870d4c49b5f2ce.js"></script><script defer src="../js/193.a30c13f728dd0ee99f09.js"></script><script defer src="../js/module/multi-step-form.5a5227df452086aea157.js"></script></head>
+  <script defer src="../js/runtime.f0218b870d4c49b5f2ce.js"></script><script defer src="../js/355.5fac8acebef9b3b4e8a6.js"></script><script defer src="../js/module/multi-step-form.2b5e958bdcc2b643bcab.js"></script></head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="multi-step-form"></div>
@@ -16,6 +16,28 @@
         UrbanRoadComponents.multiStepForm({
           elementId: 'multi-step-form',
           name: 'wholesale-registration',
+          /*parameters: {
+              title?: string;
+              fieldOptions?: {
+                [key: string]: {
+                  label?: any;
+                  placeholder?: string;
+                };
+              };
+              webhookUrl?: string;
+              webhookType?: 'POST' | 'GET';
+              redirectUrl?: string;
+              redirectDelay?: number;
+              formCompleteText?: string;
+              formSubmittingText?: string;
+              interestOptions?: string[];
+              leadSourceOptions?: string[];
+              businessTypeOptions?: string[];
+            }*/
+          parameters: {
+            webhookUrl: 'https://example.com/webhook',
+            redirectUrl: 'https://example.com/redirect',
+          },
         });
       });
     </script>

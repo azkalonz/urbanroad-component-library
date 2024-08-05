@@ -3,15 +3,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-function normalizeName(name) {
-  return name
-    .replace(/node_modules/g, 'nodemodules')
-    .replace(/[\-_.|]+/g, ' ')
-    .replace(/\b(nodemodules|js|modules|es)\b/g, '')
-    .trim()
-    .replace(/ +/g, '-');
-}
-
 module.exports = {
   entry: {
     'module/multi-step-form': './src/embeddables/multi-step-form.tsx',

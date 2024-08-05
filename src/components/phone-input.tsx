@@ -38,6 +38,7 @@ export default function PhoneInput(props: PhoneInput) {
     containerProps = {},
     className: inputCn,
     placeholder: inputPlaceholder = '',
+    label = 'Phone Number',
     ...restInputProps
   } = props;
   const phoneCode = (phoneCode: string) => (phoneCode.indexOf('+') >= 0 ? phoneCode : '+' + phoneCode);
@@ -77,8 +78,14 @@ export default function PhoneInput(props: PhoneInput) {
   useEffect(() => {
     if (remoteValue) {
       try {
-        let { value } = JSON.parse(remoteValue);
-        setValue(value);
+        let phoneNumber = parsePhoneNumber(remoteValue);
+        let selectedCountry = Country.getCountryByCode(phoneNumber.country!)!;
+        if (selectedCountry) {
+          setSelected(selectedCountry);
+          if (phoneNumber) {
+            setValue(phoneNumber.format('NATIONAL'));
+          }
+        }
       } catch (e) {}
     }
   }, [remoteValue]);
@@ -91,7 +98,7 @@ export default function PhoneInput(props: PhoneInput) {
 
   return (
     <InputWrapper>
-      <InputLabel required={props.required}>Phone number</InputLabel>
+      <InputLabel required={props.required}>{label}</InputLabel>
       <div className={clsx('ur-phone-input', containerCn)} style={containerStyle} {...restContainerProps}>
         <Popover
           trapFocus
