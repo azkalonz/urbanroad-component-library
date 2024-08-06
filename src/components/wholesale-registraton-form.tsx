@@ -228,7 +228,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             {...form.getInputProps('email')}
             {...getFieldOptions('email', {
               label: 'Email Address',
-              placeholder: 'Enter a vlaid email address',
+              placeholder: 'Enter a valid email address',
             })}
             required
             key={form.key('email')}
@@ -463,9 +463,6 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             className="mt-[8px]"
           />
         </Stepper.Step>
-        <Stepper.Completed>
-          <Button onClick={open}>View Form Values</Button>
-        </Stepper.Completed>
       </MultiStepForm>
     </div>
   );
