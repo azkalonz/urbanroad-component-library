@@ -23,6 +23,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 export default function WholesaleRegistrationForm(formParams: MultiStepFormProps) {
   const {
+    title = 'Wholesale Registration',
     businessTypeOptions = [
       'Stockist – Ecommerce',
       'Stockist – Store Front',
@@ -46,10 +47,13 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       'Other',
     ],
   } = formParams;
-  const { MultiStepForm, form, makeStepIcon, Navigation, getFieldOptions, validate } = useMultiStepForm({
+  const { MultiStepForm, form, makeStepIcon, Navigation, getFieldOptions, isLoading } = useMultiStepForm({
     stepsCount: 3,
     ...formParams,
     formData: {
+      enhanceGetInputProps: () => ({
+        disabled: isLoading,
+      }),
       initialValues: {
         subscribe_to_newsletter: false,
         agree_to_terms_of_trade: false,
@@ -146,7 +150,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
   );
 
   const FormTitle = useMemo(
-    () => () => <Text className="text-[24px] font-bold text-center my-[16px]">Wholesale Registration</Text>,
+    () => () => <Text className="text-[24px] font-bold text-center my-[16px] font-lexend">{title}</Text>,
     []
   );
 
@@ -188,23 +192,21 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
   return (
     <div className="max-w-sm m-[0_auto]">
       <MultiStepForm
-        completeComponent={
+        lastPageNav={
           <Navigation>
             <Button
               type="submit"
-              onClick={(e) => {
-                return false;
-              }}
               fullWidth
               radius="100px"
               classNames={{ label: 'ur-pill-button__label', root: 'ur-pill-button--light' }}
+              disabled={isLoading}
             >
               Register
             </Button>
           </Navigation>
         }
       >
-        <Stepper.Step {...makeStepIcon(1, 'Your details')}>
+        <Stepper.Step disabled={isLoading} {...makeStepIcon(1, 'Your details')}>
           <FormTitle />
           <TextInput
             {...form.getInputProps('first_name')}
@@ -249,7 +251,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             className="mt-[16px]"
           />
         </Stepper.Step>
-        <Stepper.Step {...makeStepIcon(2, 'Company details')}>
+        <Stepper.Step disabled={isLoading} {...makeStepIcon(2, 'Company details')}>
           <FormTitle />
           <TextInput
             {...form.getInputProps('company_name')}
@@ -347,7 +349,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             searchable
           />
         </Stepper.Step>
-        <Stepper.Step {...makeStepIcon(3, 'Other details')}>
+        <Stepper.Step disabled={isLoading} {...makeStepIcon(3, 'Other details')}>
           <FormTitle />
           <TextInput
             {...form.getInputProps('facebook_url')}
@@ -430,7 +432,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
               }}
             >
               {interestOptions.map((interest: string) => (
-                <Checkbox value={interest} label={interest} key={interest} />
+                <Checkbox value={interest} label={interest} key={interest} disabled={isLoading} />
               ))}
             </Group>
           </Checkbox.Group>

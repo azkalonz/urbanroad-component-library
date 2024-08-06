@@ -1,9 +1,8 @@
 .input {
-    height: 48px;
-    border-radius: 7px;
-    border-width: 1px;
-    --tw-border-opacity: 1;
-    border-color: rgb(228 228 228 / var(--tw-border-opacity));
-    font-size: 1rem;
-    line-height: 1.5rem
+  --input-bd-focus: var(--link-color);
+  --input-height: 48px;
+  --input-bd: #e4e4e4;
+  border-radius: 7px;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }

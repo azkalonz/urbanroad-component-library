@@ -7,7 +7,6 @@ export interface MultiStepFormProps {
     };
   };
   webhookUrl?: string;
-  webhookType?: 'POST' | 'GET';
   redirectUrl?: string;
   redirectDelay?: number;
   formCompleteText?: string;
@@ -15,4 +14,6 @@ export interface MultiStepFormProps {
   interestOptions?: string[];
   leadSourceOptions?: string[];
   businessTypeOptions?: string[];
+  resetFormDelay?: number;
+  errorMessage?: string;
 }

@@ -6,15 +6,15 @@ import { MultiStepFormProps } from '@/types/form';
 const multiStepForm = ({
   elementId,
   name,
-  parameters = {},
+  options = {},
 }: {
   elementId: string;
   name?: string;
-  parameters?: MultiStepFormProps;
+  options?: MultiStepFormProps;
 }) => {
   const root = ReactDOM.createRoot(document.getElementById(elementId) as HTMLElement);
   root.render(
-    <ThemeProvider>{name === 'wholesale-registration' && <WholesaleRegistrationForm {...parameters} />}</ThemeProvider>
+    <ThemeProvider>{name === 'wholesale-registration' && <WholesaleRegistrationForm {...options} />}</ThemeProvider>
   );
 };
 

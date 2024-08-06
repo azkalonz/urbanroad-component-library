@@ -5,7 +5,6 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@mantine/core@7.11.2/styles.css" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -16,7 +15,7 @@
         UrbanRoadComponents.multiStepForm({
           elementId: '<%= htmlWebpackPlugin.options.rootId %>',
           name: '<%= htmlWebpackPlugin.options.component %>',
-          /*parameters: {
+          /* options: {
               title?: string;
               fieldOptions?: {
                 [key: string]: {
@@ -25,18 +24,21 @@
                 };
               };
               webhookUrl?: string;
-              webhookType?: 'POST' | 'GET';
               redirectUrl?: string;
-              redirectDelay?: number;
+              redirectDelay?: number; // in seconds
               formCompleteText?: string;
               formSubmittingText?: string;
               interestOptions?: string[];
               leadSourceOptions?: string[];
               businessTypeOptions?: string[];
+              resetFormDelay?: number; // in seconds
             }*/
-          parameters: {
-            webhookUrl: 'https://example.com/webhook',
-            redirectUrl: 'https://example.com/redirect',
+          options: {
+            title: 'Wholesale Registration',
+            webhookUrl:
+              'https://flow.zoho.com.au/7003553082/flow/webhook/incoming?zapikey=1001.c392c5d71ae95043394b820fa9afab8f.f0e2b123143406a67f46cd3b63a7f51f&isdebug=false',
+            resetFormDelay: 3,
+            formCompleteText: 'Thank you for submitting your wholesale registration form!',
           },
         });
       });

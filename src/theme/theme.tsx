@@ -12,7 +12,6 @@ import {
   TextInput,
 } from '@mantine/core';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import '@/global.css';
 import * as buttonClasses from '@/theme/modules/button.module.css';
 import * as inputWrapperClasses from '@/theme/modules/input-wrapper.module.css';
 import * as popoverClasses from '@/theme/modules/popover.module.css';
