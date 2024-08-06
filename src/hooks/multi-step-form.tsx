@@ -86,19 +86,21 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
     () =>
       ({ children }: { children?: React.ReactNode }) => (
         <Group justify="space-between" wrap="nowrap" gap={16} mt="32px">
-          <Button
-            p={0}
-            className="shrink-0"
-            classNames={{
-              label: 'ur-link-button__label',
-            }}
-            variant="transparent"
-            onClick={!isLoading ? prevStep : () => {}}
-            leftSection={<ChevronLeftIcon />}
-            w="92px"
-          >
-            <Text className="underline ">Back</Text>
-          </Button>
+          {active > 0 && (
+            <Button
+              p={0}
+              className="shrink-0"
+              classNames={{
+                label: 'ur-link-button__label',
+              }}
+              variant="transparent"
+              onClick={!isLoading ? prevStep : () => {}}
+              leftSection={<ChevronLeftIcon />}
+              w="92px"
+            >
+              <Text className="underline ">Back</Text>
+            </Button>
+          )}
           {!children && (
             <Button
               onClick={() => handleNextStep()}
