@@ -45,14 +45,14 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
     let stepHasErrors = allStepErrors[active];
     let subsequentStepError = getKeyByValue(allStepErrors, true);
 
-    if (subsequentStepError) {
-      let errorIndex = parseInt(subsequentStepError);
-      setActive(errorIndex);
-      return callback({ index: errorIndex, allStepErrors });
-    } else if (!stepHasErrors) {
+    if (!stepHasErrors) {
       if (goNextStep) nextStep();
       form.clearErrors();
       return callback();
+    } else if (subsequentStepError) {
+      let errorIndex = parseInt(subsequentStepError);
+      setActive(errorIndex);
+      return callback({ index: errorIndex, allStepErrors });
     } else {
       return callback();
     }
