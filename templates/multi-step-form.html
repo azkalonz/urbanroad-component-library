@@ -33,7 +33,12 @@
               businessTypeOptions?: string[];
               resetFormDelay?: number; // in seconds
               newsletterCheckboxLabel?: string;
-              termsOfTradeCheckboxLabel?: string;
+              termsOfTrade?: {
+                checkboxLabel?: string;
+                popupTitle?: string;
+                popupContent?: { title: string; description: any }[];
+                buttonLabel?: string;
+              };
             }*/
           options: {
             title: 'Wholesale Registration',

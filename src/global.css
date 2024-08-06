@@ -478,6 +478,9 @@ video {
 .max-w-\[423px\]{
   max-width: 423px;
 }
+.max-w-\[494px\]{
+  max-width: 494px;
+}
 .max-w-sm{
   max-width: 24rem;
 }
@@ -496,17 +499,32 @@ video {
 .text-nowrap{
   text-wrap: nowrap;
 }
+.pt-\[40px\]{
+  padding-top: 40px;
+}
 .text-center{
   text-align: center;
 }
 .font-lexend{
   font-family: "Lexend", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+.font-open-sans{
+  font-family: "Open Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 .text-\[14px\]{
   font-size: 14px;
 }
+.text-\[16px\]{
+  font-size: 16px;
+}
+.text-\[20px\]{
+  font-size: 20px;
+}
 .text-\[24px\]{
   font-size: 24px;
+}
+.font-\[700\]{
+  font-weight: 700;
 }
 .font-bold{
   font-weight: 700;
@@ -516,6 +534,9 @@ video {
 }
 .underline{
   text-decoration-line: underline;
+}
+.outline{
+  outline-style: solid;
 }
 .blur{
   --tw-blur: blur(8px);

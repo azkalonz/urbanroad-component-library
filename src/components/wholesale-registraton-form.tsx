@@ -1,14 +1,17 @@
 import PhoneInput from '@/components/phone-input';
 import useMultiStepForm from '@/hooks/multi-step-form';
+import { termsAndConditionOfTrade } from '@/lib/terms-and-condition-of-trade';
 import { MultiStepFormProps } from '@/types/form';
 import { parsePhone } from '@/utils';
 import {
   Anchor,
   Button,
   Checkbox,
+  Drawer,
   Flex,
   Group,
   MultiSelect,
+  ScrollArea,
   Select,
   Stepper,
   TagsInput,
@@ -24,7 +27,12 @@ import { useEffect, useMemo, useRef } from 'react';
 export default function WholesaleRegistrationForm(formParams: MultiStepFormProps) {
   const {
     title = 'Wholesale Registration',
-    termsOfTradeCheckboxLabel = 'I agree to the Urban Road <a href="#">Terms of Trade</a>',
+    termsOfTrade: {
+      checkboxLabel = 'I agree to the Urban Road <a href="#">Terms of Trade</a>',
+      buttonLabel = 'I agree to the terms of trade',
+      popupContent = termsAndConditionOfTrade || [],
+      popupTitle = 'Terms and Conditions of Trade',
+    } = {},
     newsletterCheckboxLabel = 'I consent to receive the Urban Road newsletter',
     businessTypeOptions = [
       'Stockist – Ecommerce',
@@ -193,6 +201,36 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
 
   return (
     <div className="max-w-sm m-[0_auto]">
+      <Drawer
+        opened={opened}
+        onClose={close}
+        title={<h1 className="font-lexend text-[20px] font-[700]">{popupTitle}</h1>}
+        size="lg"
+        overlayProps={{ backgroundOpacity: 0.4 }}
+        scrollAreaComponent={ScrollArea.Autosize}
+        classNames={{
+          body: 'max-w-[494px] m-[0_auto]',
+          header: 'max-w-[494px] m-[0_auto] pt-[40px]',
+        }}
+      >
+        {popupContent.map(({ title, description }, index) => (
+          <div key={title} className="my-[16px]">
+            <h3 className="font-open-sans text-[16px] font-[700]">{title}</h3>
+            <p dangerouslySetInnerHTML={{ __html: description }} className="my-[16px]" />
+            {index < popupContent.length - 1 && <hr />}
+          </div>
+        ))}
+        <Button
+          className="black-outline"
+          variant="outline"
+          onClick={() => {
+            form.getInputProps('agree_to_terms_of_trade').onChange(true);
+            close();
+          }}
+        >
+          I agree to the terms of trade
+        </Button>
+      </Drawer>
       <MultiStepForm
         lastPageNav={
           <Navigation>
@@ -453,10 +491,16 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
           <Checkbox
             {...form.getInputProps('agree_to_terms_of_trade')}
             {...getFieldOptions('agree_to_terms_of_trade', {
-              label: <span dangerouslySetInnerHTML={{ __html: termsOfTradeCheckboxLabel }} />,
+              label: <span dangerouslySetInnerHTML={{ __html: checkboxLabel }} />,
             })}
             checked={form.getValues().agree_to_terms_of_trade}
             mt="16px"
+            required
+            onChange={(e) => {
+              if (e.target.checked) {
+                open();
+              }
+            }}
             className="mt-[8px]"
           />
         </Stepper.Step>

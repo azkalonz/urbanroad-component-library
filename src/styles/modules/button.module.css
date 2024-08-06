@@ -16,4 +16,9 @@
     --mantine-primary-color-filled: var(--primary-button-color);
     --mantine-primary-color-filled-hover: var(--primary-button-color);
   }
+  &:global(.black-outline) {
+    --button-color: #212121 !important;
+    --button-bd: 1px solid #212121 !important;
+    @apply font-lexend text-[16px] font-[500] py-[16.5px] px-[24px] h-auto w-auto rounded-[100px] my-[24px];
+  }
 }

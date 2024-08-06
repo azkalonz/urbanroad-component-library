@@ -17,5 +17,10 @@ export interface MultiStepFormProps {
   resetFormDelay?: number;
   errorMessage?: string;
   newsletterCheckboxLabel?: string;
-  termsOfTradeCheckboxLabel?: string;
+  termsOfTrade?: {
+    checkboxLabel?: string;
+    popupTitle?: string;
+    popupContent?: { title: string; description: any }[];
+    buttonLabel?: string;
+  };
 }
