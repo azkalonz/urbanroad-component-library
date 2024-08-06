@@ -99,13 +99,27 @@ export default function PhoneInput(props: PhoneInput) {
   return (
     <InputWrapper>
       <InputLabel required={props.required}>{label}</InputLabel>
-      <div className={clsx('ur-phone-input', containerCn)} style={containerStyle} {...restContainerProps}>
+      <div
+        className={clsx('ur-phone-input', containerCn)}
+        style={{
+          ...containerStyle,
+          ...(restInputProps.disabled
+            ? {
+                cursor: 'not-allowed',
+                color: '#868e96',
+                background: '#f1f3f5',
+              }
+            : {}),
+        }}
+        {...restContainerProps}
+      >
         <Popover
           trapFocus
           clickOutsideEvents={['mouseup']}
           width="target"
           position="bottom-start"
           offset={{ mainAxis: 0, crossAxis: -10 }}
+          disabled={restInputProps.disabled}
         >
           <Popover.Target>
             <ActionIcon
@@ -142,7 +156,12 @@ export default function PhoneInput(props: PhoneInput) {
             />
           </Popover.Dropdown>
         </Popover>
-        <Text className="ur-phone-input__country-code text-nowrap">{phoneCode(selected.phonecode)}</Text>
+        <Text
+          className="ur-phone-input__country-code text-nowrap"
+          style={restInputProps.disabled ? { color: '#868e96' } : {}}
+        >
+          {phoneCode(selected.phonecode)}
+        </Text>
         <TextInput
           className={clsx(inputCn, 'ur-phone-input__input !mb-0')}
           {...(error

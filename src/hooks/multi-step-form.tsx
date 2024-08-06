@@ -134,6 +134,7 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
         setSubmitted(false);
         return;
       }
+      setIsLoading(false);
       setSubmitted(true);
       if (redirectUrl) {
         (window as any).__submitFormTimeout = setTimeout(() => {
