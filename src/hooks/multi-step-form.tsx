@@ -43,17 +43,17 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
       allStepErrors[i] = Object.keys(errors).some((r: string) => stepErrors[i].fields.includes(r));
     }
     let stepHasErrors = allStepErrors[active];
-    if (!stepHasErrors) {
+    let subsequentStepError = getKeyByValue(allStepErrors, true);
+
+    if (subsequentStepError) {
+      let errorIndex = parseInt(subsequentStepError);
+      setActive(errorIndex);
+      return callback({ index: errorIndex, allStepErrors });
+    } else if (!stepHasErrors) {
       if (goNextStep) nextStep();
       form.clearErrors();
       return callback();
     } else {
-      let firstStepError = getKeyByValue(allStepErrors, true);
-      if (firstStepError) {
-        let errorIndex = parseInt(firstStepError);
-        setActive(errorIndex);
-        return callback({ index: errorIndex, allStepErrors });
-      }
       return callback();
     }
   };
@@ -169,7 +169,14 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
           <>
             {!submitted && (
               <>
-                <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+                <form
+                  onSubmit={form.onSubmit(
+                    (values) => handleSubmit(values),
+                    () => {
+                      validate();
+                    }
+                  )}
+                >
                   <Stepper active={active} onStepClick={handleNextStep}>
                     {children}
                   </Stepper>
