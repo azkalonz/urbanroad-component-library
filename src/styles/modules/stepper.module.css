@@ -27,6 +27,6 @@
 }
 .separator {
   --mantine-spacing-md: 0;
-  --stepper-color: var(--primary-button-color);
+  background-color: var(--primary-button-color) !important;
   background: var(--primary-button-color);
 }

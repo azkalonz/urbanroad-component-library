@@ -24,6 +24,8 @@ import { useEffect, useMemo, useRef } from 'react';
 export default function WholesaleRegistrationForm(formParams: MultiStepFormProps) {
   const {
     title = 'Wholesale Registration',
+    termsOfTradeCheckboxLabel = 'I agree to the Urban Road <a href="#">Terms of Trade</a>',
+    newsletterCheckboxLabel = 'I consent to receive the Urban Road newsletter',
     businessTypeOptions = [
       'Stockist – Ecommerce',
       'Stockist – Store Front',
@@ -245,7 +247,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
           <Checkbox
             {...form.getInputProps('subscribe_to_newsletter')}
             {...getFieldOptions('subscribe_to_newsletter', {
-              label: 'I consent to receive the Urban Road newsletter',
+              label: <span dangerouslySetInnerHTML={{ __html: newsletterCheckboxLabel }} />,
             })}
             checked={form.getValues().subscribe_to_newsletter}
             className="mt-[16px]"
@@ -451,12 +453,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
           <Checkbox
             {...form.getInputProps('agree_to_terms_of_trade')}
             {...getFieldOptions('agree_to_terms_of_trade', {
-              label: (
-                <Text>
-                  I agree to the Urban Road <Anchor href="#">Terms of Trade</Anchor>
-                </Text>
-              ),
-              placeholder: 'Please provide two trade references',
+              label: <span dangerouslySetInnerHTML={{ __html: termsOfTradeCheckboxLabel }} />,
             })}
             checked={form.getValues().agree_to_terms_of_trade}
             mt="16px"

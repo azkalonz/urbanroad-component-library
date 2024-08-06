@@ -5,7 +5,7 @@
     <title>MultiStepForm | Wholesale Registration</title>
     <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-  <script defer src="../js/runtime.f0218b870d4c49b5f2ce.js"></script><script defer src="../js/600.7ef100411fd0c3bb6164.js"></script><script defer src="../js/module/multi-step-form.c18e4f7f05d7a58a0a7a.js"></script></head>
+  <script defer src="../js/runtime.f0218b870d4c49b5f2ce.js"></script><script defer src="../js/618.de38d8419e59d4931960.js"></script><script defer src="../js/module/multi-step-form.37949623198981f8db9b.js"></script></head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="multi-step-form"></div>
@@ -18,7 +18,7 @@
           /* options: {
               title?: string;
               fieldOptions?: {
-                [key: string]: {
+                <FIELD NAME>: {
                   label?: any;
                   placeholder?: string;
                 };
@@ -32,6 +32,8 @@
               leadSourceOptions?: string[];
               businessTypeOptions?: string[];
               resetFormDelay?: number; // in seconds
+              newsletterCheckboxLabel?: string;
+              termsOfTradeCheckboxLabel?: string;
             }*/
           options: {
             title: 'Wholesale Registration',
@@ -39,6 +41,7 @@
               'https://flow.zoho.com.au/7003553082/flow/webhook/incoming?zapikey=1001.c392c5d71ae95043394b820fa9afab8f.f0e2b123143406a67f46cd3b63a7f51f&isdebug=false',
             resetFormDelay: 3,
             formCompleteText: 'Thank you for submitting your wholesale registration form!',
+            termsOfTradeCheckboxLabel: 'I agree to the Urban Road <a href="#">Terms of Trade</a>',
           },
         });
       });

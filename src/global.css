@@ -534,6 +534,10 @@ video {
   --stepper-icon-color: var(--text-color);
   --mantine-font-family: 'Open Sans';
 }
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
 body {
   background-color: #fcf8f2;
 }

@@ -16,4 +16,6 @@ export interface MultiStepFormProps {
   businessTypeOptions?: string[];
   resetFormDelay?: number;
   errorMessage?: string;
+  newsletterCheckboxLabel?: string;
+  termsOfTradeCheckboxLabel?: string;
 }
