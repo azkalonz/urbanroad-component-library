@@ -4,7 +4,6 @@ import { termsAndConditionOfTrade } from '@/lib/terms-and-condition-of-trade';
 import { MultiStepFormProps } from '@/types/form';
 import { parsePhone } from '@/utils';
 import {
-  Anchor,
   Button,
   Checkbox,
   Drawer,
@@ -19,10 +18,10 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { parseAddress } from 'addresser';
-import { Country, State } from 'country-state-city';
 import { isValidNumber } from 'libphonenumber-js';
-import { useEffect, useMemo, useRef } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
+
+const CountryStateSelectorLazy = lazy(() => import('./country-state-selector'));
 
 export default function WholesaleRegistrationForm(formParams: MultiStepFormProps) {
   const {
@@ -144,45 +143,11 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
   });
   const [opened, { open, close }] = useDisclosure(false);
   const leadSourceRef = useRef<HTMLInputElement>(null);
-  const countries = useMemo(
-    () =>
-      Country.getAllCountries()
-        .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
-        .map((q) => ({
-          value: q.isoCode,
-          label: q.name,
-        })),
-    []
-  );
-  const states = useMemo(
-    () => [{ name: '-' }].concat(State.getStatesOfCountry(form.getValues().country)),
-    [form.getValues().country]
-  );
 
   const FormTitle = useMemo(
     () => () => <Text className="text-[24px] font-bold text-center my-[16px] font-lexend">{title}</Text>,
     []
   );
-
-  useEffect(() => {
-    let address = form.getValues().address;
-    if (address.length) {
-      try {
-        address = parseAddress(address);
-        let s = State.getAllStates().find((q) => q.name === address.stateName);
-        address = {
-          postcode: address.zipCode,
-          suburb: address.placeName,
-          state: s?.name,
-          country: Country.getCountryByCode(s?.countryCode!)?.isoCode,
-        };
-
-        Object.keys(address).forEach((field) => {
-          form.setFieldValue(field, address[field]);
-        });
-      } catch (e) {}
-    }
-  }, [form.getValues().address]);
 
   useEffect(() => {
     if (!form.getValues().lead_source.includes('Other') && form.getValues().other_lead_source) {
@@ -192,12 +157,6 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       form.setFieldValue('referred_by', '');
     }
   }, [form.getValues().lead_source]);
-
-  useEffect(() => {
-    if (states.length <= 1) {
-      form.setFieldValue('state', '-');
-    }
-  }, [states]);
 
   return (
     <div className="max-w-sm m-[0_auto]">
@@ -330,42 +289,43 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             />
           </Flex>
           <Flex gap="8px" mb="8px">
-            <Select
-              {...form.getInputProps('country')}
-              {...getFieldOptions('country', {
-                label: 'Country',
-                placeholder: 'Country',
-              })}
-              required
-              allowDeselect={false}
-              withCheckIcon={false}
-              data={countries}
-              key={form.key('country')}
-              searchable
-              w="100%"
-            />
-            <Select
-              {...form.getInputProps('state')}
-              {...getFieldOptions('state', {
-                label: 'State',
-                placeholder: 'State',
-              })}
-              required
-              allowDeselect={false}
-              withCheckIcon={false}
-              data={
-                states
-                  .filter((obj1, i, arr) => arr.findIndex((obj2) => obj2.name === obj1.name) === i)
-                  .map((q) => ({
-                    value: q.name,
-                    label: q.name,
-                  })) || []
+            <Suspense
+              fallback={
+                <>
+                  <Select required label="Country" placeholder="Country" />
+                  <Select required label="State" placeholder="-" />
+                </>
               }
-              limit={100}
-              key={form.key('state')}
-              searchable
-              w="100%"
-            />
+            >
+              <CountryStateSelectorLazy
+                form={form}
+                selectCountryProps={{
+                  required: true,
+                  allowDeselect: false,
+                  withCheckIcon: false,
+                  searchable: true,
+                  w: '100%',
+                  ...getFieldOptions('country', {
+                    label: 'Country',
+                    placeholder: 'Country',
+                  }),
+                  ...form.getInputProps('country'),
+                }}
+                selectStateProps={{
+                  required: true,
+                  allowDeselect: false,
+                  withCheckIcon: false,
+                  searchable: true,
+                  w: '100%',
+                  limit: 100,
+                  ...getFieldOptions('state', {
+                    label: 'State',
+                    placeholder: 'State',
+                  }),
+                  ...form.getInputProps('state'),
+                }}
+              />
+            </Suspense>
           </Flex>
           <TextInput
             {...form.getInputProps('abn_acn')}
