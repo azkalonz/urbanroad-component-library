@@ -1,6 +1,0 @@
-.input {
-  --input-bd-focus: var(--link-color);
-  --input-height: 48px;
-  --input-bd: #e4e4e4;
-  @apply text-base rounded-[7px];
-}

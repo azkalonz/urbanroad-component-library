@@ -3,18 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"react-app-rewired start\" \"postcss ./src/styles/modules/*.css --dir ./src/theme/modules --watch\" \"postcss ./src/styles/global.css -o ./src/global.css --watch\"",
-    "build": "concurrently  \"npm run build-css\" \"webpack --config webpack.config.js\"",
-    "build-css": "concurrently \"postcss ./src/styles/modules/*.css --dir ./src/theme/modules\" \"postcss ./src/styles/global.css -o ./src/global.css\"",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "dev": "vite serve",
+    "build": "vite build"
   },
   "dependencies": {
     "@mantine/core": "^7.11.2",
     "@mantine/form": "^7.11.2",
     "@mantine/hooks": "^7.11.2",
     "@radix-ui/react-icons": "^1.3.0",
-    "addresser": "^1.1.20",
     "axios": "^1.7.3",
     "clean-webpack-plugin": "^4.0.0",
     "clsx": "^2.1.1",
@@ -28,55 +24,19 @@
     "@babel/preset-env": "^7.25.0",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
-    "@chromatic-com/storybook": "^1.6.1",
-    "@storybook/addon-essentials": "^8.2.6",
-    "@storybook/addon-interactions": "^8.2.6",
-    "@storybook/addon-links": "^8.2.6",
-    "@storybook/addon-onboarding": "^8.2.6",
-    "@storybook/addon-styling-webpack": "^1.0.0",
-    "@storybook/blocks": "^8.2.6",
-    "@storybook/preset-create-react-app": "^8.2.6",
-    "@storybook/react": "^8.2.6",
-    "@storybook/react-webpack5": "^8.2.6",
-    "@storybook/test": "^8.2.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "babel-loader": "^9.1.3",
-    "concurrently": "^8.2.2",
-    "css-loader": "^7.1.2",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8",
-    "eslint-plugin-storybook": "^0.8.0",
-    "html-webpack-plugin": "^5.6.0",
-    "postcss": "^8.4.40",
+    "postcss": "^8.4.41",
     "postcss-import": "^16.1.0",
-    "postcss-nested": "^6.2.0",
     "postcss-preset-mantine": "^1.17.0",
-    "postcss-simple-vars": "^7.0.1",
     "prop-types": "^15.8.1",
-    "react-app-rewired": "^2.2.1",
-    "storybook": "^8.2.6",
-    "style-loader": "^4.0.0",
-    "tailwindcss": "^3.4.1",
-    "terser-webpack-plugin": "^5.3.10",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "tailwindcss": "^3.4.9",
+    "vite": "^5.4.0",
+    "vite-plugin-commonjs": "^0.10.1",
+    "vite-plugin-html": "^3.2.2"
   }
 }

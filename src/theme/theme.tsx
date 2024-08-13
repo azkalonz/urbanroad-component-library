@@ -12,13 +12,13 @@ import {
   TextInput,
 } from '@mantine/core';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import * as buttonClasses from '@/theme/modules/button.module.css';
-import * as inputWrapperClasses from '@/theme/modules/input-wrapper.module.css';
-import * as popoverClasses from '@/theme/modules/popover.module.css';
-import * as selectClasses from '@/theme/modules/select.module.css';
-import * as textInputClasses from '@/theme/modules/text-input.module.css';
-import * as inputClasses from '@/theme/modules/input.module.css';
-import * as stepperClasses from '@/theme/modules/stepper.module.css';
+import buttonClasses from '@/theme/modules/button.module.css';
+import inputWrapperClasses from '@/theme/modules/input-wrapper.module.css';
+import popoverClasses from '@/theme/modules/popover.module.css';
+import selectClasses from '@/theme/modules/select.module.css';
+import textInputClasses from '@/theme/modules/text-input.module.css';
+import inputClasses from '@/theme/modules/input.module.css';
+import stepperClasses from '@/theme/modules/stepper.module.css';
 
 const themeOverride = createTheme({
   primaryColor: 'light-orange',
@@ -58,8 +58,9 @@ const themeOverride = createTheme({
     }),
     Checkbox: {
       classNames: {
-        label: 'text-[14px] leading-[19.6px]',
+        label: '!text-[14px] leading-[19.6px]',
         body: 'items-center',
+        input: '!w-[24px]',
       },
       styles: {
         inner: {

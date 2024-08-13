@@ -1,7 +1,7 @@
-import ReactDOM from 'react-dom/client';
-import ThemeProvider from '@/components/theme-provider';
 import WholesaleRegistrationForm from '@/components/wholesale-registraton-form';
+import ThemeProvider from '@/theme/theme-provider';
 import { MultiStepFormProps } from '@/types/form';
+import ReactDOM from 'react-dom/client';
 
 const multiStepForm = ({
   elementId,
@@ -18,4 +18,4 @@ const multiStepForm = ({
   );
 };
 
-export { multiStepForm };
+(window as any).multiStepForm = multiStepForm;

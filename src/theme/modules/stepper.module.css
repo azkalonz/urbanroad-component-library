@@ -1,36 +1,28 @@
 .stepIcon {
   --stepper-icon-size: auto;
-  height: auto;
-  min-height: 0px;
-  width: auto;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  @apply w-auto h-auto min-h-0 px-[12px] py-[2px];
   color: var(--text-color);
-}
-  .stepIcon[data-progress='true'] {
+  &[data-progress='true'] {
     border: none;
     background-color: var(--primary-button-color);
   }
-  .stepIcon[data-completed] {
+  &[data-completed] {
     background-color: transparent;
     border: 1.5px solid var(--primary-button-color);
-  }
-  .stepIcon[data-completed] > * {
+    & > * {
       position: relative;
     }
-  .stepIcon:not([data-progress]):not([data-completed]) {
+  }
+  &:not([data-progress]):not([data-completed]) {
     background-color: transparent;
     border: 1.5px solid var(--primary-button-color);
   }
+}
 .separator {
-  margin: 0px;
-  height: 1.5px !important;
-  width: 20px;
+  @apply m-0 w-[20px] !h-[1.5px];
 }
 .stepCompletedIcon {
-  transition-duration: 0s !important;
+  @apply !duration-0;
   color: var(--text-color);
 }
 .separator {

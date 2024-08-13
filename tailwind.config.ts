@@ -8,8 +8,8 @@ const config: Config = {
     './src/theme/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/hooks/**/*.{js,ts,jsx,tsx,mdx}',
-    './.storybook/**/*.{js,ts,jsx,tsx,mdx}',
     './src/index.tsx',
+    './templates/multi-step-form.html',
   ],
   theme: {
     extend: {

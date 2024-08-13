@@ -1,61 +1,24 @@
 .label {
   text-transform: uppercase;
-}
-  .label:global(.ur-pill-button__label) {
+  &:global(.ur-pill-button__label) {
     color: var(--text-color);
     font-size: 16px;
     font-weight: 500;
   }
-  .label:global(.ur-link-button__label) {
+  &:global(.ur-link-button__label) {
     --text-color: var(--link-color);
     text-decoration: underline;
   }
+}
 
-.root:global(.ur-pill-button--light) {
+.root {
+  &:global(.ur-pill-button--light) {
     --mantine-primary-color-filled: var(--primary-button-color);
     --mantine-primary-color-filled-hover: var(--primary-button-color);
   }
-
-.root:global(.black-outline) {
+  &:global(.black-outline) {
     --button-color: #212121 !important;
     --button-bd: 1px solid #212121 !important;
+    @apply font-lexend text-[16px] font-[500] py-[16.5px] px-[24px] h-auto w-auto rounded-[100px] my-[24px];
   }
-
-.root:global(.black-outline) {
-  margin-top: 24px;
-  margin-bottom: 24px;
-}
-
-.root:global(.black-outline) {
-  height: auto;
-}
-
-.root:global(.black-outline) {
-  width: auto;
-}
-
-.root:global(.black-outline) {
-  border-radius: 100px;
-}
-
-.root:global(.black-outline) {
-  padding-top: 16.5px;
-  padding-bottom: 16.5px;
-}
-
-.root:global(.black-outline) {
-  padding-left: 24px;
-  padding-right: 24px;
-}
-
-.root:global(.black-outline) {
-  font-family: "Lexend", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
-
-.root:global(.black-outline) {
-  font-size: 16px;
-}
-
-.root:global(.black-outline) {
-  font-weight: 500;
 }

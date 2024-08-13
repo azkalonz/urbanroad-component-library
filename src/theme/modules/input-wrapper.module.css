@@ -1,12 +1,11 @@
-.root:global(:not(.no-margin)) {
+.root {
+  &:global(:not(.no-margin)) {
     margin-bottom: 8px;
   }
+}
 .required {
   --input-asterisk-color: var(--text-color);
 }
 .label {
-    margin-bottom: 4px;
-    font-family: 'Lexend';
-    font-size: 14px;
-    line-height: 19.6px;
+  @apply !text-[14px] leading-[19.6px] mb-[4px] font-['Lexend'];
 }

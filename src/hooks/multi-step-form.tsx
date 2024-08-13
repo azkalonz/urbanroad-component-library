@@ -84,37 +84,38 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
 
   const Navigation = useMemo(
     () =>
-      ({ children }: { children?: React.ReactNode }) => (
-        <Group justify="space-between" wrap="nowrap" gap={16} mt="32px">
-          {active > 0 && (
-            <Button
-              p={0}
-              className="shrink-0"
-              classNames={{
-                label: 'ur-link-button__label',
-              }}
-              variant="transparent"
-              onClick={!isLoading ? prevStep : () => {}}
-              leftSection={<ChevronLeftIcon />}
-              w="92px"
-            >
-              <Text className="underline ">Back</Text>
-            </Button>
-          )}
-          {!children && (
-            <Button
-              onClick={() => handleNextStep()}
-              fullWidth
-              radius="100px"
-              classNames={{ label: 'ur-pill-button__label' }}
-              disabled={isLoading}
-            >
-              Next
-            </Button>
-          )}
-          {!!children && children}
-        </Group>
-      ),
+      ({ children }: { children?: React.ReactNode }) =>
+        (
+          <Group justify="space-between" wrap="nowrap" gap={16} mt="32px">
+            {active > 0 && (
+              <Button
+                p={0}
+                className="shrink-0"
+                classNames={{
+                  label: 'ur-link-button__label',
+                }}
+                variant="transparent"
+                onClick={!isLoading ? prevStep : () => {}}
+                leftSection={<ChevronLeftIcon />}
+                w="92px"
+              >
+                <Text className="underline ">Back</Text>
+              </Button>
+            )}
+            {!children && (
+              <Button
+                onClick={() => handleNextStep()}
+                fullWidth
+                radius="100px"
+                classNames={{ label: 'ur-pill-button__label', root: '!h-[36px]' }}
+                disabled={isLoading}
+              >
+                Next
+              </Button>
+            )}
+            {!!children && children}
+          </Group>
+        ),
     [active, isLoading]
   );
 

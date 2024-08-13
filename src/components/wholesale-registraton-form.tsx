@@ -99,14 +99,14 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
           !value?.length
             ? null
             : /(https?:\/\/[^\s]+)/g.test(value)
-              ? null
-              : "The URL must start with 'http://' or 'https://'.",
+            ? null
+            : "The URL must start with 'http://' or 'https://'.",
         instagram_url: (value: string) =>
           !value?.length
             ? null
             : /(https?:\/\/[^\s]+)/g.test(value)
-              ? null
-              : "The URL must start with 'http://' or 'https://'.",
+            ? null
+            : "The URL must start with 'http://' or 'https://'.",
         phone: (value: string) => {
           let { number_code } = parsePhone(value);
           return isValidNumber(number_code) ? null : 'Invalid phone number';
@@ -187,7 +187,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             close();
           }}
         >
-          I agree to the terms of trade
+          {buttonLabel}
         </Button>
       </Drawer>
       <MultiStepForm
@@ -197,7 +197,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
               type="submit"
               fullWidth
               radius="100px"
-              classNames={{ label: 'ur-pill-button__label', root: 'ur-pill-button--light' }}
+              classNames={{ label: 'ur-pill-button__label', root: 'ur-pill-button--light !h-[36px]' }}
               disabled={isLoading}
             >
               Register

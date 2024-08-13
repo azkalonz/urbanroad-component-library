@@ -2,7 +2,5 @@
   --input-bd-focus: var(--link-color);
   --input-height: 48px;
   --input-bd: #e4e4e4;
-  border-radius: 7px;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  @apply text-base focus-visible:shadow-none;
 }

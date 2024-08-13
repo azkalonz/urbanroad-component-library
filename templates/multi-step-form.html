@@ -2,19 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <title>MultiStepForm | Wholesale Registration</title>
     <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="<%= htmlWebpackPlugin.options.rootId %>"></div>
+    <div id="multi-step-form"></div>
 
+    <script type="module" src="../src/embeddables/multi-step-form.tsx"></script>
     <script type="text/javascript">
       window.addEventListener('DOMContentLoaded', function () {
-        UrbanRoadComponents.multiStepForm({
-          elementId: '<%= htmlWebpackPlugin.options.rootId %>',
-          name: '<%= htmlWebpackPlugin.options.component %>',
+        multiStepForm({
+          elementId: 'multi-step-form',
+          name: 'wholesale-registration',
           /* options: {
               title?: string;
               fieldOptions?: {
