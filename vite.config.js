@@ -11,7 +11,15 @@ export default defineConfig({
   plugins: [react(), commonjs(), tailwindcss()],
   build: {
     minify: 'terser',
-    outDir: resolve(__dirname, 'examples'),
+    terserOptions: {
+      parse: {
+        html5_comments: false,
+      },
+      format: {
+        comments: false,
+      },
+    },
+    outDir: resolve(__dirname, 'build'),
     emptyOutDir: false,
     rollupOptions: {
       input: {
@@ -19,6 +27,7 @@ export default defineConfig({
       },
     },
   },
+  esbuild: { legalComments: 'none' },
   css: {
     postcss: {
       plugins: [tailwindcss()],

@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import { Country, ICountry } from 'country-state-city';
 import { CountryCode, isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 import { useEffect, useMemo, useRef, useState } from 'react';
-const flags = require('../countries-flags/index');
+const flags = require('../lib/countries-flags/index');
 
 interface PhoneInput extends Omit<TextInputProps, 'children' | 'variant' | 'onChange'> {
   containerProps?: React.ButtonHTMLAttributes<HTMLDivElement>;
