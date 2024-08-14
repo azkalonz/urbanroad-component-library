@@ -70,11 +70,11 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
   const makeStepIcon = (step: number, description: string) => {
     let icon =
       active === step - 1 ? (
-        <Text>
+        <Text className="!text-[14px]">
           <b>Step {step}:</b> {description}
         </Text>
       ) : (
-        <Text>Step {step}</Text>
+        <Text className="!text-[14px]">Step {step}</Text>
       );
     return {
       icon,

@@ -20,10 +20,15 @@ export default defineConfig({
       },
     },
     outDir: resolve(__dirname, 'build'),
-    emptyOutDir: false,
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         'wholesale-registration-form': resolve(templates, 'multi-step-form.html'),
+      },
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`,
       },
     },
   },

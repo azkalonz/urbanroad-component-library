@@ -1,5 +1,6 @@
 .input {
   --input-bd-focus: var(--link-color);
+  --input-fz: 14px;
   --input-height: 48px;
   --input-bd: #e4e4e4;
   @apply text-base focus-visible:shadow-none;

@@ -1,3 +1,10 @@
+import buttonClasses from '@/theme/modules/button.module.css';
+import inputWrapperClasses from '@/theme/modules/input-wrapper.module.css';
+import inputClasses from '@/theme/modules/input.module.css';
+import popoverClasses from '@/theme/modules/popover.module.css';
+import selectClasses from '@/theme/modules/select.module.css';
+import stepperClasses from '@/theme/modules/stepper.module.css';
+import textInputClasses from '@/theme/modules/text-input.module.css';
 import {
   Button,
   colorsTuple,
@@ -12,13 +19,6 @@ import {
   TextInput,
 } from '@mantine/core';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import buttonClasses from '@/theme/modules/button.module.css';
-import inputWrapperClasses from '@/theme/modules/input-wrapper.module.css';
-import popoverClasses from '@/theme/modules/popover.module.css';
-import selectClasses from '@/theme/modules/select.module.css';
-import textInputClasses from '@/theme/modules/text-input.module.css';
-import inputClasses from '@/theme/modules/input.module.css';
-import stepperClasses from '@/theme/modules/stepper.module.css';
 
 const themeOverride = createTheme({
   primaryColor: 'light-orange',
@@ -69,9 +69,36 @@ const themeOverride = createTheme({
         },
       },
     },
+    Pill: {
+      classNames: {
+        label: '!text-[14px]',
+      },
+    },
     PillGroup: {
       classNames: {
-        group: 'w-[100%]',
+        group: 'w-[100%] !text-[14px]',
+      },
+    },
+    PillsInputField: {
+      classNames: {
+        field: 'focus-visible:shadow-none !text-[14px]',
+      },
+    },
+    TagsInput: {
+      classNames: {
+        inputField: '!text-[14px] focus-visible:shadow-none',
+      },
+    },
+    Overlay: {
+      classNames: {
+        root: '!block',
+      },
+    },
+    Drawer: {
+      styles: {
+        root: {
+          '--drawer-size-lg': '620px',
+        },
       },
     },
   },
