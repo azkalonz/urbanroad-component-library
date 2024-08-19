@@ -104,11 +104,17 @@ const themeOverride = createTheme({
     MultiSelect: {
       classNames: {
         option: '!text-[14px]',
+        error: '!text-[14px]',
       },
     },
     ScrollArea: {
       classNames: {
         thumb: '!block',
+      },
+    },
+    CheckboxGroup: {
+      classNames: {
+        error: '!text-[14px]',
       },
     },
   },

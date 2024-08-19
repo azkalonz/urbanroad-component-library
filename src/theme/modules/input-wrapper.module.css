@@ -9,3 +9,7 @@
 .label {
   @apply !text-[14px] leading-[19.6px] mb-[4px] font-['Lexend'];
 }
+
+.error {
+  @apply !text-[14px];
+}

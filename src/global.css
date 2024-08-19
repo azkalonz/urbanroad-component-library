@@ -52,3 +52,8 @@ body {
     border: 1px solid var(--link-color);
   }
 }
+
+.mantine-Select-option,
+.mantine-MultiSelect-option {
+  padding: 9px 10px !important;
+}

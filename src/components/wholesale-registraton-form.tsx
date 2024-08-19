@@ -447,6 +447,9 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
               form.getInputProps('lead_source').onChange(value);
               leadSourceRef.current?.blur();
             }}
+            onDropdownClose={() => {
+              debugger;
+            }}
             required
             data={leadSourceOptions}
             searchable
