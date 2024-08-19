@@ -18,7 +18,7 @@ interface _MultiStepForm {
   stepsCount: number;
   beforeSubmit?: (
     multiStepFormBeforeSubmitParams: MultiStepFormBeforeSubmitParams
-  ) => Promise<{ error?: any; isLoading?: boolean; isSubmitted?: boolean }>;
+  ) => Promise<{ error?: any; isLoading?: boolean; isSubmitted?: boolean; newValues?: any }>;
 }
 
 export default function useMultiStepForm(params: MultiStepFormProps & _MultiStepForm) {
@@ -136,12 +136,15 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
     setError(null);
 
     if (beforeSubmit) {
-      let { error = null } = await beforeSubmit({ values, form, setActive });
+      let { error = null, newValues } = await beforeSubmit({ values, form, setActive });
       if (error) {
         setError(error);
         setIsLoading(false);
         setSubmitted(false);
         return;
+      }
+      if (newValues) {
+        values = { ...values, ...newValues };
       }
     }
 
@@ -231,6 +234,7 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
   };
 
   return {
+    setIsLoading,
     MultiStepForm,
     Navigation,
     validate,

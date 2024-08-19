@@ -79,6 +79,8 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
         address: '',
         postcode: '',
         abn_acn: '',
+        abn: '',
+        acn: '',
         is_acn: false,
         business_type: '',
         facebook_url: '',
@@ -145,10 +147,11 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       },
     },
     async beforeSubmit({ values, form, setActive }) {
+      const newValues: any = {};
       if (values.phone) {
         let i = values.phone.indexOf(') ');
         let unformatted = values.phone.substring(i + 2);
-        form.setFieldValue('phone_unformatted', unformatted);
+        newValues.phone_unformatted = unformatted;
       }
 
       const getAbnDetails = (data: string) => {
@@ -158,19 +161,19 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       let abnLookUp = await axios.get(
         `https://abr.business.gov.au/json/AbnDetails.aspx?abn=${values.abn_acn}&callback=callback&guid=76c707f6-1c3a-432e-9d6a-96ed87c604bc`
       );
-      let abn = getAbnDetails(abnLookUp.data);
-      if (!abn.Abn) {
+      let abnAcn = getAbnDetails(abnLookUp.data);
+      if (!abnAcn.Abn) {
         abnLookUp = await axios.get(
           `https://abr.business.gov.au/json/AcnDetails.aspx?acn=${values.abn_acn}&callback=callback&guid=76c707f6-1c3a-432e-9d6a-96ed87c604bc`
         );
-        abn = getAbnDetails(abnLookUp.data);
-        if (abn.Abn) {
-          form.setFieldValue('is_acn', true);
+        abnAcn = getAbnDetails(abnLookUp.data);
+        if (abnAcn.Acn) {
+          newValues.is_acn = true;
         }
       } else {
-        form.setFieldValue('is_acn', false);
+        newValues.is_acn = false;
       }
-      if (!abn.Abn) {
+      if (!abnAcn.Abn) {
         setActive(1);
         form.setFieldError('abn_acn', 'Invalid ABN/ACN');
         return {
@@ -178,15 +181,17 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             'Please check your information and try again. If the problem persists, you might want to contact support.',
         };
       }
+      newValues.abn = abnAcn.Abn;
+      newValues.acn = abnAcn.Acn;
       if (
-        abn.EntityName.toLowerCase() !== values.company_name.toLowerCase() &&
-        !abn.BusinessName?.map((q: string) => q.toLowerCase()).includes(values.company_name.toLowerCase())
+        abnAcn.EntityName.toLowerCase() !== values.company_name.toLowerCase() &&
+        !abnAcn.BusinessName?.map((q: string) => q.toLowerCase()).includes(values.company_name.toLowerCase())
       ) {
-        form.setFieldValue('inconsistent_company_info', true);
+        newValues.inconsistent_company_info = true;
       } else {
-        form.setFieldValue('inconsistent_company_info', false);
+        newValues.inconsistent_company_info = false;
       }
-      return {};
+      return { newValues };
     },
   });
   const [opened, { open, close }] = useDisclosure(false);
@@ -208,6 +213,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
 
   return (
     <div className="max-w-sm m-[0_auto]">
+      <pre>{JSON.stringify(form.getValues(), null, 4)}</pre>
       <Drawer
         opened={opened}
         onClose={close}
