@@ -78,6 +78,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
         address: '',
         postcode: '',
         abn_acn: '',
+        is_acn: false,
         business_type: '',
         facebook_url: '',
         instagram_url: '',
@@ -155,6 +156,11 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
           `https://abr.business.gov.au/json/AcnDetails.aspx?acn=${values.abn_acn}&callback=callback&guid=76c707f6-1c3a-432e-9d6a-96ed87c604bc`
         );
         abn = getAbnDetails(abnLookUp.data);
+        if (abn.Abn) {
+          form.setFieldValue('is_acn', true);
+        }
+      } else {
+        form.setFieldValue('is_acn', false);
       }
       if (!abn.Abn) {
         setActive(1);
