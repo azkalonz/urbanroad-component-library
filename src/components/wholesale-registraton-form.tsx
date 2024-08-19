@@ -90,6 +90,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
         interest: [],
         trade_references: [],
         inconsistent_company_info: false,
+        source: window.location.href,
       },
       validate: {
         email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
