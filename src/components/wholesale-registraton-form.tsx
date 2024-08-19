@@ -213,7 +213,6 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
 
   return (
     <div className="max-w-sm m-[0_auto]">
-      <pre>{JSON.stringify(form.getValues(), null, 4)}</pre>
       <Drawer
         opened={opened}
         onClose={close}

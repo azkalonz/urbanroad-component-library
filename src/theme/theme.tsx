@@ -106,6 +106,11 @@ const themeOverride = createTheme({
         option: '!text-[14px]',
       },
     },
+    ScrollArea: {
+      classNames: {
+        thumb: '!block',
+      },
+    },
   },
 });
 
