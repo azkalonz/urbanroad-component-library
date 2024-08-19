@@ -1,15 +1,24 @@
 import { MultiStepFormProps } from '@/types/form';
 import { getKeyByValue } from '@/utils';
 import { Alert, Button, Group, Stepper, Text } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { useForm, UseFormReturnType } from '@mantine/form';
 import { CheckCircledIcon, ChevronLeftIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 import axios from 'axios';
 import { useMemo, useState } from 'react';
+
+type MultiStepFormBeforeSubmitParams = {
+  values: Record<string, any>;
+  form: UseFormReturnType<Record<string, any>, (values: Record<string, any>) => Record<string, any>>;
+  setActive: React.Dispatch<React.SetStateAction<number>>;
+};
 
 interface _MultiStepForm {
   formData: any;
   stepErrors?: { [key: number]: { fields: string[] } };
   stepsCount: number;
+  beforeSubmit?: (
+    multiStepFormBeforeSubmitParams: MultiStepFormBeforeSubmitParams
+  ) => Promise<{ error?: any; isLoading?: boolean; isSubmitted?: boolean }>;
 }
 
 export default function useMultiStepForm(params: MultiStepFormProps & _MultiStepForm) {
@@ -23,6 +32,7 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
     resetFormDelay = 3,
     formCompleteText = 'Form submitted sucessfully.Thank you!',
     errorMessage = "We're sorry, but your form could not be submitted at this time. Please check your information and try again. If the problem persists, you might want to contact support.",
+    beforeSubmit,
   } = params;
   const form = useForm(formData);
   const [active, setActive] = useState(0);
@@ -59,6 +69,7 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
   };
 
   const handleNextStep = (index?: number) => {
+    setError(null);
     if (typeof index !== 'number') {
       validate();
     } else {
@@ -123,9 +134,20 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
     let hasError = false;
     setIsLoading(true);
     setError(null);
+
+    if (beforeSubmit) {
+      let { error = null } = await beforeSubmit({ values, form, setActive });
+      if (error) {
+        setError(error);
+        setIsLoading(false);
+        setSubmitted(false);
+        return;
+      }
+    }
+
     try {
       if (webhookUrl) {
-        await axios.post(webhookUrl, values).catch((err) => {
+        await axios.post(webhookUrl, values).catch((e) => {
           setError(errorMessage);
           hasError = true;
         });

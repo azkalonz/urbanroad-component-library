@@ -157,7 +157,7 @@ export default function PhoneInput(props: PhoneInput) {
           </Popover.Dropdown>
         </Popover>
         <Text
-          className="ur-phone-input__country-code text-nowrap"
+          className="ur-phone-input__country-code text-nowrap !text-[16px]"
           style={restInputProps.disabled ? { color: '#868e96' } : {}}
         >
           {phoneCode(selected.phonecode)}

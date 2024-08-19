@@ -18,6 +18,7 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import axios from 'axios';
 import { isValidNumber } from 'libphonenumber-js';
 import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
 
@@ -86,6 +87,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
         other_lead_source: '',
         interest: [],
         trade_references: [],
+        inconsistent_company_info: false,
       },
       validate: {
         email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
@@ -121,7 +123,6 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
           'state',
           'address',
           'postcode',
-          'abn_acn',
           'business_type',
           'lead_source',
           'interest',
@@ -139,6 +140,36 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       2: {
         fields: ['website_url', 'lead_source', 'interest', 'trade_references', 'referred_by', 'other_lead_source'],
       },
+    },
+    async beforeSubmit({ values, form, setActive }) {
+      const callback = (data: any) => data;
+      let abnLookUp = await axios.get(
+        `https://abr.business.gov.au/json/AbnDetails.aspx?abn=${values.abn_acn}&callback=callback&guid=76c707f6-1c3a-432e-9d6a-96ed87c604bc`
+      );
+      let abn = eval(abnLookUp.data);
+      if (!abn.Abn) {
+        abnLookUp = await axios.get(
+          `https://abr.business.gov.au/json/AcnDetails.aspx?acn=${values.abn_acn}&callback=callback&guid=76c707f6-1c3a-432e-9d6a-96ed87c604bc`
+        );
+        abn = eval(abnLookUp.data);
+      }
+      if (!abn.Abn) {
+        setActive(1);
+        form.setFieldError('abn_acn', 'Invalid ABN/ACN');
+        return {
+          error:
+            'Please check your information and try again. If the problem persists, you might want to contact support.',
+        };
+      }
+      if (
+        abn.EntityName.toLowerCase() !== values.company_name.toLowerCase() &&
+        !abn.BusinessName?.map((q: string) => q.toLowerCase()).includes(values.company_name.toLowerCase())
+      ) {
+        form.setFieldValue('inconsistent_company_info', true);
+      } else {
+        form.setFieldValue('inconsistent_company_info', false);
+      }
+      return {};
     },
   });
   const [opened, { open, close }] = useDisclosure(false);
@@ -163,19 +194,20 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       <Drawer
         opened={opened}
         onClose={close}
-        title={<h1 className="font-lexend text-[20px] font-[700]">{popupTitle}</h1>}
+        title={popupTitle}
         size="lg"
         overlayProps={{ backgroundOpacity: 0.4 }}
         scrollAreaComponent={ScrollArea.Autosize}
         classNames={{
           body: 'max-w-[494px] m-[0_auto]',
           header: 'max-w-[494px] m-[0_auto] pt-[40px]',
+          title: 'font-lexend text-[20px] !font-[700]',
         }}
       >
         {popupContent.map(({ title, description }, index) => (
           <div key={title} className="my-[16px]">
             <h3 className="font-open-sans text-[16px] font-[700]">{title}</h3>
-            <p dangerouslySetInnerHTML={{ __html: description }} className="my-[16px]" />
+            <p dangerouslySetInnerHTML={{ __html: description }} className="my-[16px] text-[16px]" />
             {index < popupContent.length - 1 && <hr />}
           </div>
         ))}
@@ -335,6 +367,13 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
             })}
             required
             w="100%"
+            onKeyUp={(e) => {
+              let val = parseInt(e.currentTarget.value);
+              if (val < 0) {
+                e.currentTarget.value = '';
+              }
+            }}
+            type="number"
           />
           <Select
             {...form.getInputProps('business_type')}

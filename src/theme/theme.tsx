@@ -101,6 +101,11 @@ const themeOverride = createTheme({
         },
       },
     },
+    MultiSelect: {
+      classNames: {
+        option: '!text-[14px]',
+      },
+    },
   },
 });
 
