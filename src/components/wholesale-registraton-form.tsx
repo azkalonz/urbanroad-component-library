@@ -70,6 +70,7 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
         first_name: '',
         last_name: '',
         phone: '',
+        phone_unformatted: '',
         email: '',
         company_name: '',
         country: '',
@@ -143,6 +144,12 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       },
     },
     async beforeSubmit({ values, form, setActive }) {
+      if (values.phone) {
+        let i = values.phone.indexOf(') ');
+        let unformatted = values.phone.substring(i + 2);
+        form.setFieldValue('phone_unformatted', unformatted);
+      }
+
       const getAbnDetails = (data: string) => {
         data = data.replace('callback(', '').replace('})', '}');
         return JSON.parse(data);
