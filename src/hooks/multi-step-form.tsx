@@ -210,7 +210,17 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
                     {children}
                   </Stepper>
                   {error && (
-                    <Alert variant="light" color="red" title="Submission Error" icon={<InfoCircledIcon />} mt={17}>
+                    <Alert
+                      variant="light"
+                      color="red"
+                      title="Submission Error"
+                      icon={<InfoCircledIcon />}
+                      mt={17}
+                      classNames={{
+                        message: 'text-[14px]',
+                        title: 'text-[16px]',
+                      }}
+                    >
                       <span dangerouslySetInnerHTML={{ __html: error }} />
                     </Alert>
                   )}
