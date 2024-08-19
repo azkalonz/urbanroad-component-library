@@ -142,16 +142,19 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
       },
     },
     async beforeSubmit({ values, form, setActive }) {
-      const callback = (data: any) => data;
+      const getAbnDetails = (data: string) => {
+        data = data.replace('callback(', '').replace('})', '}');
+        return JSON.parse(data);
+      };
       let abnLookUp = await axios.get(
         `https://abr.business.gov.au/json/AbnDetails.aspx?abn=${values.abn_acn}&callback=callback&guid=76c707f6-1c3a-432e-9d6a-96ed87c604bc`
       );
-      let abn = eval(abnLookUp.data);
+      let abn = getAbnDetails(abnLookUp.data);
       if (!abn.Abn) {
         abnLookUp = await axios.get(
           `https://abr.business.gov.au/json/AcnDetails.aspx?acn=${values.abn_acn}&callback=callback&guid=76c707f6-1c3a-432e-9d6a-96ed87c604bc`
         );
-        abn = eval(abnLookUp.data);
+        abn = getAbnDetails(abnLookUp.data);
       }
       if (!abn.Abn) {
         setActive(1);
