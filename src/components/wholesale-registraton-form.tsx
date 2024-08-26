@@ -1,7 +1,7 @@
 import PhoneInput from '@/components/phone-input';
 import useMultiStepForm from '@/hooks/multi-step-form';
 import { termsAndConditionOfTrade } from '@/lib/terms-and-condition-of-trade';
-import { MultiStepFormProps } from '@/types/form';
+import { WholesaleRegistrationFormProps } from '@/types/form';
 import { parsePhone } from '@/utils';
 import {
   Button,
@@ -24,7 +24,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
 
 const CountryStateSelectorLazy = lazy(() => import('./country-state-selector'));
 
-export default function WholesaleRegistrationForm(formParams: MultiStepFormProps) {
+export default function WholesaleRegistrationForm(formParams: WholesaleRegistrationFormProps) {
   const {
     title = 'Wholesale Registration',
     termsOfTrade: {
@@ -58,8 +58,8 @@ export default function WholesaleRegistrationForm(formParams: MultiStepFormProps
     ],
   } = formParams;
   const { MultiStepForm, form, makeStepIcon, Navigation, getFieldOptions, isLoading } = useMultiStepForm({
-    stepsCount: 3,
     ...formParams,
+    stepsCount: 3,
     formData: {
       enhanceGetInputProps: () => ({
         disabled: isLoading,

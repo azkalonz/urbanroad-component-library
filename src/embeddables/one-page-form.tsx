@@ -1,6 +1,6 @@
-import WholesaleRegistrationForm from '@/components/wholesale-registraton-form';
+import ArtistSubmissionForm from '@/components/artist-submission-form';
 import ThemeProvider from '@/theme/theme-provider';
-import { WholesaleRegistrationFormProps } from '@/types/form';
+import { FormProps } from '@/types/form';
 import ReactDOM from 'react-dom/client';
 
 const multiStepForm = ({
@@ -10,12 +10,10 @@ const multiStepForm = ({
 }: {
   elementId: string;
   name?: string;
-  options?: WholesaleRegistrationFormProps;
+  options?: FormProps;
 }) => {
   const root = ReactDOM.createRoot(document.getElementById(elementId) as HTMLElement);
-  root.render(
-    <ThemeProvider>{name === 'wholesale-registration' && <WholesaleRegistrationForm {...options} />}</ThemeProvider>
-  );
+  root.render(<ThemeProvider>{name === 'artist-submission' && <ArtistSubmissionForm {...options} />}</ThemeProvider>);
 };
 
 (window as any).multiStepForm = multiStepForm;

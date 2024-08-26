@@ -1,35 +1,21 @@
 import { MultiStepFormProps } from '@/types/form';
 import { getKeyByValue } from '@/utils';
 import { Alert, Button, Group, Stepper, Text } from '@mantine/core';
-import { useForm, UseFormReturnType } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import { CheckCircledIcon, ChevronLeftIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 import axios from 'axios';
 import { useMemo, useState } from 'react';
 
-type MultiStepFormBeforeSubmitParams = {
-  values: Record<string, any>;
-  form: UseFormReturnType<Record<string, any>, (values: Record<string, any>) => Record<string, any>>;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-};
-
-interface _MultiStepForm {
-  formData: any;
-  stepErrors?: { [key: number]: { fields: string[] } };
-  stepsCount: number;
-  beforeSubmit?: (
-    multiStepFormBeforeSubmitParams: MultiStepFormBeforeSubmitParams
-  ) => Promise<{ error?: any; isLoading?: boolean; isSubmitted?: boolean; newValues?: any }>;
-}
-
-export default function useMultiStepForm(params: MultiStepFormProps & _MultiStepForm) {
+export default function useMultiStepForm(params: MultiStepFormProps) {
   const {
     formData,
     stepErrors,
-    stepsCount,
+    stepsCount = 0,
     webhookUrl,
     redirectUrl,
     redirectDelay = 0,
     resetFormDelay = 3,
+    showPagination = true,
     formCompleteText = 'Form submitted sucessfully.Thank you!',
     errorMessage = "We're sorry, but your form could not be submitted at this time. Please check your information and try again. If the problem persists, you might want to contact support.",
     beforeSubmit,
@@ -206,7 +192,13 @@ export default function useMultiStepForm(params: MultiStepFormProps & _MultiStep
                     }
                   )}
                 >
-                  <Stepper active={active} onStepClick={handleNextStep}>
+                  <Stepper
+                    active={active}
+                    onStepClick={handleNextStep}
+                    classNames={{
+                      steps: showPagination ? '' : 'hidden',
+                    }}
+                  >
                     {children}
                   </Stepper>
                   {error && (

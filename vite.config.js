@@ -24,6 +24,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         'wholesale-registration-form': resolve(templates, 'multi-step-form.html'),
+        'artist-submission-form': resolve(templates, 'one-page-form.html'),
       },
       output: {
         entryFileNames: `assets/[name].js`,
