@@ -1,4 +1,5 @@
 import ArtistSubmissionForm from '@/components/artist-submission-form';
+import ContactUsForm from '@/components/contact-us-form';
 import ThemeProvider from '@/theme/theme-provider';
 import { FormProps } from '@/types/form';
 import ReactDOM from 'react-dom/client';
@@ -13,7 +14,12 @@ const multiStepForm = ({
   options?: FormProps;
 }) => {
   const root = ReactDOM.createRoot(document.getElementById(elementId) as HTMLElement);
-  root.render(<ThemeProvider>{name === 'artist-submission' && <ArtistSubmissionForm {...options} />}</ThemeProvider>);
+  root.render(
+    <ThemeProvider>
+      {name === 'artist-submission' && <ArtistSubmissionForm {...options} />}
+      {name === 'contact-us' && <ContactUsForm {...options} />}
+    </ThemeProvider>
+  );
 };
 
 (window as any).multiStepForm = multiStepForm;

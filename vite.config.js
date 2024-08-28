@@ -25,6 +25,7 @@ export default defineConfig({
       input: {
         'wholesale-registration-form': resolve(templates, 'multi-step-form.html'),
         'artist-submission-form': resolve(templates, 'one-page-form.html'),
+        'contact-us-form': resolve(templates, 'contact-us-form.html'),
       },
       output: {
         entryFileNames: `assets/[name].js`,
