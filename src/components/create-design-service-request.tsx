@@ -162,9 +162,6 @@ export default function CreateDesignServiceRequestForm(formParams: FormProps & C
         disabled: isLoading,
       }),
       initialValues: {
-        image_1: '',
-        image_2: '',
-        image_3: '',
         wall_dimensions: '',
         artwork_location: [],
         preferred_style: [],
