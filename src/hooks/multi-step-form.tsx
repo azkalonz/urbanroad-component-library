@@ -4,7 +4,7 @@ import { Alert, Button, Group, Stepper, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { CheckCircledIcon, ChevronLeftIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 import axios from 'axios';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function useMultiStepForm(params: MultiStepFormProps) {
   const {
@@ -12,6 +12,7 @@ export default function useMultiStepForm(params: MultiStepFormProps) {
     stepErrors,
     stepsCount = 0,
     webhookUrl,
+    webhookRequestConfig,
     redirectUrl,
     redirectDelay = 0,
     resetFormDelay = 3,
@@ -27,10 +28,8 @@ export default function useMultiStepForm(params: MultiStepFormProps) {
   const [error, setError] = useState<string | null>(null);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-  const validate = (
-    goNextStep: boolean = true,
-    callback: (error?: { index: number; allStepErrors: any }) => void = () => {}
-  ) => {
+
+  const validate = () => {
     if (!stepErrors?.[active]) return {};
     const validate = form.validate();
     const { errors } = validate;
@@ -41,16 +40,12 @@ export default function useMultiStepForm(params: MultiStepFormProps) {
     let stepHasErrors = allStepErrors[active];
     let subsequentStepError = getKeyByValue(allStepErrors, true);
 
-    if (!stepHasErrors) {
-      if (goNextStep) nextStep();
-      form.clearErrors();
-      return callback();
-    } else if (subsequentStepError) {
+    if (subsequentStepError?.length) {
       let errorIndex = parseInt(subsequentStepError);
       setActive(errorIndex);
-      return callback({ index: errorIndex, allStepErrors });
-    } else {
-      return callback();
+    }
+    if (!stepHasErrors) {
+      form.clearErrors();
     }
   };
 
@@ -136,10 +131,11 @@ export default function useMultiStepForm(params: MultiStepFormProps) {
 
     try {
       if (webhookUrl) {
-        await axios.post(webhookUrl, values).catch((e) => {
+        await axios.post(webhookUrl, values, webhookRequestConfig).catch((e) => {
           setError(errorMessage);
           hasError = true;
         });
+        hasError = true;
       }
       if (hasError) {
         setIsLoading(false);
@@ -234,6 +230,14 @@ export default function useMultiStepForm(params: MultiStepFormProps) {
     }
     return params.fieldOptions[field];
   };
+
+  useEffect(() => {
+    const elements = Object.keys(form.errors)
+      .map((name) => document.querySelector(`[data-path="${name}"]`))
+      .filter((el) => !!el);
+    elements.sort((a, b) => b.scrollHeight - a.scrollHeight);
+    elements[0]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [form.errors]);
 
   return {
     setIsLoading,

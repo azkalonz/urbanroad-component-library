@@ -1,7 +1,9 @@
 import { UseFormReturnType } from '@mantine/form';
+import { AxiosRequestConfig } from 'axios';
 
 export interface FormProps {
   title?: string;
+  subtitle?: string;
   fieldOptions?: {
     [key: string]: {
       label?: any;
@@ -9,6 +11,7 @@ export interface FormProps {
     };
   };
   webhookUrl?: string;
+  webhookRequestConfig?: AxiosRequestConfig<Record<string, any>;
   redirectUrl?: string;
   redirectDelay?: number;
   formCompleteText?: string;
