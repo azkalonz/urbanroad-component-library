@@ -69,6 +69,13 @@ const themeOverride = createTheme({
         },
       },
     },
+    Radio: {
+      styles: {
+        inner: {
+          '--mantine-color-white': 'transparent',
+        },
+      },
+    },
     Pill: {
       classNames: {
         label: '!text-[14px]',
