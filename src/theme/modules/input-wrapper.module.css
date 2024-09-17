@@ -4,7 +4,7 @@
   }
 }
 .required {
-  --input-asterisk-color: var(--text-color);
+  --input-asterisk-color: var(--text-red-800);
 }
 .label {
   @apply !text-[14px] leading-[19.6px] mb-[4px] font-['Lexend'];
