@@ -212,7 +212,7 @@ export default function WholesaleRegistrationForm(formParams: WholesaleRegistrat
   }, [form.getValues().lead_source]);
 
   return (
-    <div className="max-w-sm m-[0_auto]">
+    <div className="max-w-[383px] m-[0_auto]">
       <Drawer
         opened={opened}
         onClose={close}
