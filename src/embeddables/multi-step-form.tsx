@@ -1,4 +1,4 @@
-import WholesaleRegistrationForm from '@/components/wholesale-registraton-form';
+import WholesaleRegistrationForm from '@/components/wholesale-registration-form';
 import ThemeProvider from '@/theme/theme-provider';
 import { WholesaleRegistrationFormProps } from '@/types/form';
 import ReactDOM from 'react-dom/client';

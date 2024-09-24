@@ -135,7 +135,6 @@ export default function useMultiStepForm(params: MultiStepFormProps) {
           setError(errorMessage);
           hasError = true;
         });
-        hasError = true;
       }
       if (hasError) {
         setIsLoading(false);
